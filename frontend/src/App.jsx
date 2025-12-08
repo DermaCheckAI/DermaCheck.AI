@@ -2,9 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
 import Register from './pages/Register';
-import Kartiki from './pages/Kartiki';
-
-
 import Dashboard from './pages/Dashboard';
 // import Analysis from './pages/Analysis';
 // import History from './pages/History';
@@ -35,7 +32,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         {/* <Route path="/history" element={<History />} /> */}
         {/* <Route path="/suggestions" element={<Suggestions />} /> */}
-        <Route path="/kartiki" element={<Kartiki/>} />
+        
       </Routes>
     </Router>
   );
