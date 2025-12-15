@@ -3,7 +3,12 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
+import { useTranslation } from "react-i18next";
+
+
 export default function Home() {
+  const { t } = useTranslation(); // ✅ Add this
+  
   const [form, setForm] = useState({
     email: '',
     password: ''
@@ -31,6 +36,10 @@ export default function Home() {
       // Store token
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      // store histroy pg token 
+
+    {/* localStorage.setItem('user', JSON.stringify(data.user));*/}
+
       
       setMsg('Login successful! Redirecting...');
       setTimeout(() => window.location.href = '/dashboard', 2000);
@@ -84,6 +93,8 @@ export default function Home() {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
+    
+
 
       {/* Navigation Bar */}
       <Navbar showRegisterButton={true} />
@@ -95,10 +106,29 @@ export default function Home() {
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-8 leading-tight">Welcome to DermaCheck.AI</h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">Your AI-powered dermatology assistant for fast, accurate skin Diseases detection, analysis and recommendations!</p>
+            
+            {/*changes made by vaishnavi
+                <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-8 leading-tight">
+  {t("welcome_message")}
+</h1>
+<p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">
+  {t("home_description")}
+</p> 
+
+*/}
+
+            
             <div className="flex gap-4 flex-col md:flex-row">
               <Link to="/register" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-cyan-500/50 transition-all text-lg text-center">Get Started</Link>
               <button onClick={scrollToFeatures} className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-bold px-8 py-4 rounded-xl transition-all text-lg">Learn More</button>
-            </div>
+           {/*changes made by vaishnavi 
+            <button onClick={scrollToFeatures} className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-bold px-8 py-4 rounded-xl transition-all text-lg">
+  {t("learn_more")}
+</button>
+*/}
+
+           
+           </div>
           </div>
           {/* Right: Login form */}
           <div className="flex-1 max-w-md w-full bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl shadow-2xl shadow-cyan-500/20 p-10 hover:border-opacity-50 transition-all">
@@ -129,6 +159,16 @@ export default function Home() {
               >
                 {loading ? 'Logging in...' : 'Login'}
               </button>
+              {/*changes made by vaishnavi 
+              <button 
+  type="submit" 
+  disabled={loading}
+  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold px-5 py-3 rounded-xl shadow-lg hover:shadow-cyan-500/50 mt-4 text-lg transition-all"
+>
+  {loading ? t("logging_in") : t("login")}
+</button>
+
+              */}
             </form>
 
             {msg && (
@@ -138,6 +178,12 @@ export default function Home() {
             )}
 
             <p className="text-center text-gray-400 mt-6">Don't have an account? <Link to="/register" className="text-cyan-400 hover:text-cyan-300 font-semibold">Sign up</Link></p>
+            {/*changes made by vaishnavi 
+            <p className="text-center text-gray-400 mt-6">
+  {t("no_account")} <Link to="/register" className="text-cyan-400 hover:text-cyan-300 font-semibold">{t("sign_up")}</Link>
+</p>
+
+             */}
           </div>
         </div>
       </main>
