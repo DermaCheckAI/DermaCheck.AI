@@ -11,7 +11,7 @@ export default function Navbar({ showRegisterButton = true }) {
         <Link to="/analysis" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Analysis</Link>
         <Link to="/history" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">History</Link>
         <Link to="/suggestions" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Suggestions</Link>
-        <Link to="/dashboard" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Dashboard</Link>
+        
         {showRegisterButton && (
           <Link to="/register" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-cyan-500/50 transition-all flex items-center h-fit">Register</Link>
         )}
