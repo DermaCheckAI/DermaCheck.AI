@@ -33,7 +33,7 @@ export default function Home() {
       localStorage.setItem('user', JSON.stringify(data.user));
       
       setMsg('Login successful! Redirecting...');
-      setTimeout(() => window.location.href = '/dashboard', 2000);
+      setTimeout(() => window.location.href = '/Analysis', 2000);
     } catch (err) {
       setMsg(err.message);
     } finally {

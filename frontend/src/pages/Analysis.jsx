@@ -114,6 +114,7 @@ export default function Analysis() {
           {/* File Input */}
           <input
             type="file"
+            
             accept="image/*"
             onChange={(e) => {
               setImage(e.target.files[0]);

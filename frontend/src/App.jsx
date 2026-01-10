@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Analysis from './pages/Analysis';
 // import History from './pages/History';
-// import Suggestions from './pages/Suggestions';
+import Suggestions from './pages/Suggestions';
 
 export default function App() {
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/analysis" element={<Analysis />} />
         {/* <Route path="/history" element={<History />} /> */}
-        {/* <Route path="/suggestions" element={<Suggestions />} /> */}
+        <Route path="/suggestions" element={<Suggestions />} />
         
       </Routes>
     </Router>
