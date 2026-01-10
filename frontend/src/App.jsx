@@ -33,7 +33,8 @@ export default function App() {
         {/* <Route path="/history" element={<History />} /> */}
         {/* <Route path="/suggestions" element={<Suggestions />} /> */}
         
-      </Routes>
+      </Routes> 
     </Router>
   );
 }
+//.
