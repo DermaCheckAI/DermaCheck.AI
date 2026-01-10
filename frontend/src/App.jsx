@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
-import Register from './pages/Register';
+import Login from './pages/Login';  
 import Dashboard from './pages/Dashboard';
 // import Analysis from './pages/Analysis';
 // import History from './pages/History';
@@ -27,7 +27,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/Login" element={<Login />} />
         {/* <Route path="/analysis" element={<Analysis />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
         {/* <Route path="/history" element={<History />} /> */}
