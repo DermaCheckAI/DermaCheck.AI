@@ -142,7 +142,12 @@ export default function Home() {
         </div>
       </main>
 
+<<<<<<< Updated upstream
       {/* Features Section */}
+=======
+
+{/* Features Section */}
+>>>>>>> Stashed changes
       <section id="features-section" className="relative z-5 w-full bg-gradient-to-b from-transparent via-gray-900 to-gray-900 py-20 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">Why Choose DermaCheck.AI?</h2>
@@ -193,8 +198,12 @@ export default function Home() {
               <p className="text-gray-300">Receive dermatologist-approved skincare tips and product recommendations.</p>
             </div>
 
+<<<<<<< Updated upstream
 
           </div>
+=======
+        </div>
+>>>>>>> Stashed changes
 
           {/* CTA Section */}
           <div className="mt-20 text-center">
