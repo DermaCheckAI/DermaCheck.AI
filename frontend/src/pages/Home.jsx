@@ -77,7 +77,10 @@ export default function Home() {
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-cyan-500 rounded-full blur-3xl opacity-10 animate-slow-pulse"></div>
-        <div className="absolute -bottom-8 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-10 animate-slow-pulse" style={{ animationDelay: '2s' }}></div>
+        <div
+          className="absolute -bottom-8 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-10 animate-slow-pulse"
+          style={{ animationDelay: '2s' }}
+        ></div>
       </div>
 
       <Navbar showRegisterButton={true} />
@@ -94,10 +97,19 @@ export default function Home() {
               Your AI-powered dermatology assistant for fast and accurate skin disease detection.
             </p>
             <div className="flex gap-4 flex-col md:flex-row">
-              <Link to="/Login" className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-8 py-4 rounded-xl text-center">
+
+              {/* ✅ ONLY CHANGE: signup mode */}
+              <Link
+                to="/login?mode=signup"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-8 py-4 rounded-xl text-center"
+              >
                 Get Started
               </Link>
-              <button onClick={scrollToFeatures} className="border-2 border-cyan-400 text-cyan-400 px-8 py-4 rounded-xl">
+
+              <button
+                onClick={scrollToFeatures}
+                className="border-2 border-cyan-400 text-cyan-400 px-8 py-4 rounded-xl"
+              >
                 Learn More
               </button>
             </div>
@@ -147,7 +159,11 @@ export default function Home() {
 
             <p className="text-center text-gray-400 mt-6">
               Don&apos;t have an account?{' '}
-              <Link to="/Login" className="text-cyan-400 font-semibold">
+              {/* ✅ ONLY CHANGE: signup mode */}
+              <Link
+                to="/login?mode=signup"
+                className="text-cyan-400 font-semibold"
+              >
                 Sign up
               </Link>
             </p>
