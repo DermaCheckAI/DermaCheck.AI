@@ -94,7 +94,7 @@ export default function Home() {
           {/* Left: Bigger message */}
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-8 leading-tight">Welcome to DermaCheck.AI</h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">Your AI-powered dermatology assistant for fast, accurate skin Diseases detection, analysis and recommendations!</p>
+            <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed">Your AI-powered dermatology assistant for fast, accurate skin Diseases classification, analysis and recommendations!</p>
             <div className="flex gap-4 flex-col md:flex-row">
               <Link to="/register" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-cyan-500/50 transition-all text-lg text-center">Get Started</Link>
               <button onClick={scrollToFeatures} className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black font-bold px-8 py-4 rounded-xl transition-all text-lg">Learn More</button>
@@ -147,7 +147,7 @@ export default function Home() {
       <section id="features-section" className="relative z-5 w-full bg-gradient-to-b from-transparent via-gray-900 to-gray-900 py-20 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">Why Choose DermaCheck.AI?</h2>
-          <p className="text-center text-gray-300 text-lg mb-16">Advanced AI technology for accurate skin analysis and personalized recommendations</p>
+          <p className="text-center text-gray-300 text-lg mb-16">AI technology for accurate skin analysis and personalized recommendations</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
@@ -175,23 +175,25 @@ export default function Home() {
 
             {/* Feature 4 */}
             <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
-              <div className="text-4xl mb-4 text-cyan-400">💡</div>
-              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Expert Tips</h3>
-              <p className="text-gray-300">Receive dermatologist-approved skincare tips and product recommendations.</p>
+              <div className="text-4xl mb-4 text-cyan-400">🌐</div>
+              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Multi-Language Support</h3>
+              <p className="text-gray-300">Use the system in multiple language for easy understanding and better accessibility for different region.</p>
             </div>
             
             {/* Feature 5 */}
             <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
-              <div className="text-4xl mb-4 text-cyan-400">💡</div>
-              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Test Section [ADD MORE]</h3>
-              <p className="text-gray-300">Receive dermatologist-approved skincare tips and product recommendations.</p>
+              <div className="text-4xl mb-4 text-cyan-400">🔒</div>
+              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Data Security & Privacy </h3>
+              <p className="text-gray-300">All uploaded images and user data are securely processed and protected to ensure privacy.</p>
             </div>
             
             {/* Feature 6 */}
             <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
-              <div className="text-4xl mb-4 text-cyan-400">💡</div>
-              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Test Section [ADD MORE]</h3>
-              <p className="text-gray-300">Receive dermatologist-approved skincare tips and product recommendations.</p>
+              <div className="text-4xl mb-4 text-cyan-400">🩺
+                
+              </div>
+              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Know Your Condition</h3>
+              <p className="text-gray-300">Understand symptoms and get simple care tips after detection.</p>
             </div>
 
         </div>
@@ -228,7 +230,7 @@ export default function Home() {
 
             {/* FAQ 5 */}
             <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-xl p-6 hover:border-opacity-50 transition-all">
-              <h4 className="text-xl font-bold text-blue-400 mb-2">Is this free?</h4>
+              <h4 className="text-xl font-bold text-blue-400 mb-2">Is this analysis free?</h4>
               <p className="text-gray-300">Yes! Sign up for free and get free skin analyses to try out DermaCheck.AI.</p>
             </div>
           </div>

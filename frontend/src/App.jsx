@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Analysis from './pages/Analysis';
 // import History from './pages/History';
 import Suggestions from './pages/Suggestions';
+import DiseaseInfo from "./pages/DiseaseInfo";
 
 export default function App() {
   useEffect(() => {
@@ -30,9 +31,10 @@ export default function App() {
         <Route path="/analysis" element={<Analysis />} />
         {/* <Route path="/history" element={<History />} /> */}
         <Route path="/suggestions" element={<Suggestions />} />
+        <Route path="/diseaseinfo" element={<DiseaseInfo />} />
+
         
       </Routes> 
     </Router>
   );
 }
-//.
