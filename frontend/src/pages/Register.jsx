@@ -23,7 +23,7 @@ export default function Register() {
     
     if (form.password !== form.confirmPassword) {
       setMsg('Passwords do not match');
-      setLoading(false);
+      setLoading(false); 
       return;
     }
 
