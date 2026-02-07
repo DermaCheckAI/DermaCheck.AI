@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-//import { useLanguage, translations } from '../language'
+import { useLanguage, translations } from '../language'
 import { useTranslation } from "react-i18next"
 
 
 export default function Home() {
+  
 
   const { lang } = useLanguage()
   const t = translations[lang]
