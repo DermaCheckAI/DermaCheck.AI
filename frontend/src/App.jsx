@@ -11,19 +11,19 @@ import { Routes, Route } from 'react-router-dom';
 
 export default function App() {
   useEffect(() => {
-    // Initialize test user if not exists
-    const existingUser = localStorage.getItem('user');
+    // Temporary test user (REMOVE in production)
+    const existingUser = localStorage.getItem('user')
     if (!existingUser) {
       const testUser = {
         id: 1,
         email: 'test@example.com',
         fullName: 'Test User',
         mobile: '9876543210'
-      };
-      localStorage.setItem('user', JSON.stringify(testUser));
-      localStorage.setItem('token', 'test-token-12345');
+      }
+      localStorage.setItem('user', JSON.stringify(testUser))
+      localStorage.setItem('token', 'test-token-12345')
     }
-  }, []);
+  }, [])
 
   return (
     
