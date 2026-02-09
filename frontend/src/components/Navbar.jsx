@@ -1,25 +1,6 @@
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
-import { useTranslation } from "react-i18next"
-import { MdLanguage } from "react-icons/md"
-
-
-// import { useLanguage, translations } from '../pages/language.jsx'
-
-
-// import { MdLanguage } from "react-icons/md"      // ✅ ADD (optional icon)
-
-
-
+import { Link } from 'react-router-dom';
 
 export default function Navbar({ showRegisterButton = true }) {
-
-    // const { t, i18n } = useTranslation()   // ✅ CHANGED
-      const { t, i18n } = useTranslation()               // ✅ CHANGED: using i18next hook
-
-    const [open, setOpen] = useState(false)
-
-
   return (
     <nav className="relative z-10 w-full h-20 bg-white bg-opacity-5 backdrop-blur-md border-b border-cyan-500 border-opacity-20 flex items-center justify-between px-8 shadow-lg">
       <div className="flex items-center gap-4 h-full">
@@ -38,7 +19,6 @@ export default function Navbar({ showRegisterButton = true }) {
         )}
         
       </div>
-
     </nav>
   );
 }

@@ -19,7 +19,7 @@ export default function History() {
     setLoading(true);
     setMsg('');
 
-    // ✅ FRONTEND-ONLY FALLBACK
+    // ✅ FRONTEND-ONLY FALLBACK (NO BACKEND)
     if (!token) {
       setHistory([
         {
@@ -27,7 +27,7 @@ export default function History() {
           result: 'Benign',
           confidence: 0.92,
           createdAt: new Date(),
-          notes: 'Sample demo history',
+          notes: 'Sample demo history (offline mode)',
           imageUrl: ''
         }
       ]);
@@ -35,6 +35,7 @@ export default function History() {
       return;
     }
 
+    /* 🔌 BACKEND MODE (UNCOMMENT WHEN READY)
     try {
       const res = await fetch('/api/history', {
         headers: {
@@ -53,17 +54,21 @@ export default function History() {
     } finally {
       setLoading(false);
     }
+    */
+
+    setLoading(false);
   }
 
   async function handleDelete(id) {
     if (!window.confirm('Delete this record?')) return;
 
-    // frontend-only delete
+    // ✅ FRONTEND-ONLY DELETE
     if (!token) {
       setHistory((h) => h.filter((item) => item._id !== id));
       return;
     }
 
+    /* 🔌 BACKEND DELETE (UNCOMMENT LATER)
     try {
       const res = await fetch(`/api/history/${id}`, {
         method: 'DELETE',
@@ -74,6 +79,7 @@ export default function History() {
     } catch (err) {
       alert(err.message);
     }
+    */
   }
 
   return (
@@ -82,45 +88,64 @@ export default function History() {
 
       <main className="flex-1 container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-6 text-cyan-400">
-            Your Scan History
+          <h1 className="text-4xl font-bold text-center mb-10 text-cyan-400">
+            Scan History
           </h1>
 
-          {msg && <p className="text-center text-red-400 mb-4">{msg}</p>}
+          {msg && <p className="text-center text-red-400 mb-6">{msg}</p>}
 
           {loading ? (
-            <p className="text-center">Loading...</p>
+            <p className="text-center text-gray-300">Loading history...</p>
           ) : history.length === 0 ? (
-            <div className="text-center">
-              <p>No scans yet.</p>
+            <div className="text-center text-gray-300">
+              <p>No scans available.</p>
               <Link to="/scan" className="text-cyan-400 mt-4 inline-block">
-                Start a new scan
+                Start a new scan →
               </Link>
             </div>
           ) : (
-            <ul className="space-y-4">
-              {history.map((item) => (
-                <li key={item._id} className="bg-white/5 p-4 rounded-xl border border-cyan-400/20">
-                  <div className="flex justify-between">
-                    <div>
-                      <h3 className="font-semibold">{item.result}</h3>
-                      <p className="text-sm">Confidence: {item.confidence}</p>
-                    </div>
-                    <span className="text-xs text-gray-400">
-                      {new Date(item.createdAt).toLocaleString()}
-                    </span>
-                  </div>
+            <ul className="space-y-6">
+              {history.map((item) => {
+                const dateObj = new Date(item.createdAt);
 
-                  {item.notes && <p className="text-sm mt-2">{item.notes}</p>}
-
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="mt-3 text-sm px-3 py-1 bg-red-600/20 rounded"
+                return (
+                  <li
+                    key={item._id}
+                    className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-cyan-400/20 hover:border-cyan-400/40 transition"
                   >
-                    Delete
-                  </button>
-                </li>
-              ))}
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-lg font-semibold text-cyan-300">
+                          {item.result}
+                        </h3>
+
+                        <p className="text-sm text-gray-300 mt-1">
+                          Confidence: {(item.confidence * 100).toFixed(0)}%
+                        </p>
+                      </div>
+
+                      {/* 📅 Windows / System Date */}
+                      <div className="text-xs text-gray-400 text-right">
+                        <p>{dateObj.toLocaleDateString()}</p>
+                        <p>{dateObj.toLocaleTimeString()}</p>
+                      </div>
+                    </div>
+
+                    {item.notes && (
+                      <p className="text-sm text-gray-300 mt-4">
+                        {item.notes}
+                      </p>
+                    )}
+
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="mt-4 text-sm px-4 py-1.5 rounded-lg bg-red-600/20 hover:bg-red-600/30 transition"
+                    >
+                      Delete
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
