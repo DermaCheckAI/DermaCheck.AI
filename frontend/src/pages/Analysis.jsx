@@ -6,9 +6,7 @@ import Footer from "../components/Footer";
 export default function Analysis() {
   const navigate = useNavigate();
 
-  // ==============================
-  // 🔹 STATE
-  // ==============================
+  
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [message, setMessage] = useState("");
