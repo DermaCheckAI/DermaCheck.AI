@@ -7,7 +7,7 @@ from flask import render_template
 
 app = Flask(__name__)
 
-model = tf.keras.models.load_model(r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_v3.keras")
+model = tf.keras.models.load_model("efficientnet_v3.keras")
 
 CLASS_NAMES = [
     "Acne",
