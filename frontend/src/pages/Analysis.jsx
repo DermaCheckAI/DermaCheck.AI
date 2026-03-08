@@ -3,11 +3,16 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Analysis() {
-
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [message, setMessage] = useState("");
   const [cameraOn, setCameraOn] = useState(false);
+
+  // New states for backend results
+  const [prediction, setPrediction] = useState("");
+  const [confidence, setConfidence] = useState("");
+  const [symptoms, setSymptoms] = useState("");
+  const [advice, setAdvice] = useState("");
 
   // DEMO MODE
   useEffect(() => {
@@ -15,34 +20,38 @@ export default function Analysis() {
   }, []);
 
   // UPLOAD FUNCTION
-const handleUpload = async () => {
-  if (!image) {
-    setMessage("Please select or capture an image first.");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("file", image);
-
-  try {
-    setMessage("Uploading image...");
-    const res = await fetch("http://127.0.0.1:5000/predict", {
-      method: "POST",
-      body: formData
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      setMessage(`Prediction: ${data.prediction} (${data.confidence}%)`);
-    } else {
-      setMessage("Error: " + data.error);
+  const handleUpload = async () => {
+    if (!image) {
+      setMessage("Please select or capture an image first.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setMessage("Failed to connect to backend");
-  }
-};
+
+    const formData = new FormData();
+    formData.append("file", image);
+
+    try {
+      setMessage("Uploading image...");
+      const res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setPrediction(data.prediction);
+        setConfidence(data.confidence);
+        setSymptoms(data.symptoms || "No symptoms provided");
+        setAdvice(data.advice || "No advice available");
+        setMessage(""); // clear old message
+      } else {
+        setMessage("Error: " + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to connect to backend");
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
@@ -57,15 +66,12 @@ const handleUpload = async () => {
 
       {/* MAIN */}
       <div className="relative z-10 p-10 max-w-5xl mx-auto">
-
-        {/* Title */}
         <h1 className="text-4xl font-bold text-center text-cyan-300 mb-10">
           SKIN DISEASES CLASSIFICATION
         </h1>
 
         {/* Upload Section */}
         <div className="text-center mt-10 bg-gray-800 bg-opacity-40 p-6 rounded-xl border border-gray-700">
-
           <h2 className="text-2xl font-bold text-yellow-300 mb-6">
             Upload Image for Detection
           </h2>
@@ -88,7 +94,7 @@ const handleUpload = async () => {
             {image ? image.name : "No file chosen"}
           </p>
 
-         {/* Camera Option */}
+          {/* Camera Option */}
           <div className="mt-4">
             <button
               onClick={() => setCameraOn(!cameraOn)}
@@ -118,40 +124,41 @@ const handleUpload = async () => {
             onClick={handleUpload}
             className="mt-6 px-12 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white text-xl font-bold hover:scale-105 transition-all shadow-lg"
           >
-            Analysis 
+            Analysis
           </button>
 
           {message && <p className="text-green-400 mt-4">{message}</p>}
-
-
         </div>
 
-
-         {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-12 mt-16 mb-11">
-
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-12 mt-16 mb-11">
           <div className="flex-1 max-w-md w-full bg-black bg-opacity-50 border border-green-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
             <h2 className="text-gray-300 text-xl">Confidence Score</h2>
-            <p className="text-6xl font-bold text-green-400 mt-3">95%</p>
+            <p className="text-6xl font-bold text-green-400 mt-3">
+              {confidence ? `${confidence}%` : "0%"}
+            </p>
           </div>
 
           <div className="w-full bg-black bg-opacity-50 border border-pink-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
             <h2 className="text-gray-300 text-xl">Diseases classified</h2>
-            <p className="text-6xl font-bold text-pink-400 mt-3">Acne</p>
+            <p className="text-6xl font-bold text-pink-400 mt-3">
+              {prediction || "-"}
+            </p>
           </div>
-
         </div>
-        
+
         <div className="w-full bg-black bg-opacity-50 border border-blue-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
-            <h2 className="text-gray-300 text-xl">Symptoms</h2>
-            {/* <p className="text-6xl font-bold text-pink-400 mt-3">Acne</p> */}
+          <h2 className="text-gray-300 text-xl">Symptoms</h2>
+          <p className="text-lg font-semibold mt-3">{symptoms || "-"}</p>
+        </div>
 
-          </div>
-
+        <div className="w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+          <h2 className="text-gray-300 text-xl">Advice</h2>
+          <p className="text-lg font-semibold mt-3">{advice || "-"}</p>
+        </div>
       </div>
 
       <Footer />
-
     </div>
   );
 }
