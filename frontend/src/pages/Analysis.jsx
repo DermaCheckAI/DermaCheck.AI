@@ -146,14 +146,14 @@ export default function Analysis() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-12 mt-16 mb-11">
           <div className="flex-1 max-w-md w-full bg-black bg-opacity-50 border border-green-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
             <h2 className="text-gray-300 text-xl">Confidence Score</h2>
-            <p className="text-6xl font-bold text-green-400 mt-3">
+            <p className="text-lg font-bold text-green-400 mt-3">
               {confidence ? `${confidence}%` : "0%"}
             </p>
           </div>
 
           <div className="w-full bg-black bg-opacity-50 border border-pink-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
             <h2 className="text-gray-300 text-xl">Diseases classified</h2>
-            <p className="text-6xl font-bold text-pink-400 mt-3">
+            <p className="text-lg font-bold text-pink-400 mt-3">
               {prediction || "-"}
             </p>
           </div>
@@ -161,12 +161,13 @@ export default function Analysis() {
 
         <div className="w-full bg-black bg-opacity-50 border border-blue-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
           <h2 className="text-gray-300 text-xl">Symptoms</h2>
-          <p className="text-lg font-semibold mt-3">{symptoms || "-"}</p>
+          <p className="text-lg font-semibold mt-3 text-cyan-300">{symptoms || "-"}</p>
+
         </div>
 
         <div className="w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
           <h2 className="text-gray-300 text-xl">Advice</h2>
-          <p className="text-lg font-semibold mt-3">{advice || "-"}</p>
+          <p className="text-lg font-semibold mt-3 text-yellow-300">{advice || "-"}</p>
         </div>
       </div>
 
