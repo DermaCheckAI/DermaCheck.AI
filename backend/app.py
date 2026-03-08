@@ -1,6 +1,13 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.preprocessing import image
+from PIL import Image
+import io
+
+app = Flask(__name__)
+CORS(app)  # allow requests from frontend
 
 classes = [
     "Acne",
@@ -16,29 +23,30 @@ model = tf.keras.models.load_model(
     compile=False
 )
 
-# image path
-img_path = r"C:\Users\kisan\DermaCheck.AI\backend\sn7_atopicdermatitis2.webp"
+@app.route("/predict", methods=["POST"])
+def predict():
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
 
-# load image
-img = image.load_img(img_path, target_size=(224, 224))
+    file = request.files["file"]
 
-# convert to array
-img_array = image.img_to_array(img)
+    # convert to PIL Image
+    img = Image.open(file).convert("RGB")
+    img = img.resize((224, 224))
 
-# expand dimension
-img_array = np.expand_dims(img_array, axis=0)
+    # preprocess
+    img_array = np.array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
 
-# normalize
-img_array = img_array / 255.0
+    # predict
+    predictions = model.predict(img_array)
+    predicted_class = classes[np.argmax(predictions)]
+    confidence = float(np.max(predictions) * 100)
 
-# prediction
-predictions = model.predict(img_array)
+    return jsonify({
+        "prediction": predicted_class,
+        "confidence": round(confidence, 2)
+    })
 
-# get class
-predicted_class = classes[np.argmax(predictions)]
-
-# confidence
-confidence = np.max(predictions) * 100
-
-print("Prediction:", predicted_class)
-print("Confidence:", round(confidence, 2), "%")
+if __name__ == "__main__":
+    app.run(debug=True)
