@@ -37,15 +37,27 @@ export default function Analysis() {
       });
 
       const data = await res.json();
+      console.log("Backend response:", data); // <-- Added log for debugging
 
       if (res.ok) {
-        setPrediction(data.prediction);
-        setConfidence(data.confidence);
-        setSymptoms(data.symptoms || "No symptoms provided");
-        setAdvice(data.advice || "No advice available");
+        setPrediction(data.prediction || "-");
+        setConfidence(data.confidence || 0);
+
+        // Handle nested or missing fields
+        setSymptoms(
+          data.symptoms ||
+          data.details?.symptoms ||
+          "No symptoms provided"
+        );
+        setAdvice(
+          data.advice ||
+          data.details?.advice ||
+          "No advice available"
+        );
+
         setMessage(""); // clear old message
       } else {
-        setMessage("Error: " + data.error);
+        setMessage("Error: " + (data.error || "Unknown error"));
       }
     } catch (err) {
       console.error(err);
