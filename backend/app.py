@@ -1,61 +1,44 @@
-from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
-from PIL import Image
-import io
-from flask import render_template
+from tensorflow.keras.preprocessing import image
 
-app = Flask(__name__)
-
-model = tf.keras.models.load_model("efficientnet_v3.keras")
-
-CLASS_NAMES = [
+classes = [
     "Acne",
     "Atopic Dermatitis",
-    "Benign_tumors",
+    "Benign Tumor",
     "Fungal Infection",
     "Skin Cancer"
 ]
 
-IMG_SIZE = 224
+# load model
+model = tf.keras.models.load_model(
+    r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_v3.keras",
+    compile=False
+)
 
-@app.route("/test")
-def test_page():
-    return render_template("test.html")
-    
-def preprocess_image(image_bytes):
-    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    img = img.resize((IMG_SIZE, IMG_SIZE))
-    img = np.array(img) / 255.0
-    img = np.expand_dims(img, axis=0)
-    return img
+# image path
+img_path = r"C:\Users\kisan\DermaCheck.AI\backend\sn7_atopicdermatitis2.webp"
 
-@app.route("/")
-def home():
-    return "Model loaded successfully!"
+# load image
+img = image.load_img(img_path, target_size=(224, 224))
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    if "image" not in request.files:
-        return jsonify({"error": "No image uploaded"}), 400
+# convert to array
+img_array = image.img_to_array(img)
 
-    image_file = request.files["image"]
-    image_bytes = image_file.read()
+# expand dimension
+img_array = np.expand_dims(img_array, axis=0)
 
-    img = preprocess_image(image_bytes)
-    preds = model.predict(img)
+# normalize
+img_array = img_array / 255.0
 
-    predicted_index = int(np.argmax(preds))
-    confidence = float(np.max(preds))
+# prediction
+predictions = model.predict(img_array)
 
-    return jsonify({
-        "prediction": CLASS_NAMES[predicted_index],
-        "confidence": confidence
-    })
+# get class
+predicted_class = classes[np.argmax(predictions)]
 
-@app.route("/predict-test", methods=["GET"])
-def predict_test():
-    return "POST endpoint is alive"
+# confidence
+confidence = np.max(predictions) * 100
 
-if __name__ == "__main__":
-    app.run(debug=True)
+print("Prediction:", predicted_class)
+print("Confidence:", round(confidence, 2), "%")
