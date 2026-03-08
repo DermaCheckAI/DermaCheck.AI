@@ -2,20 +2,34 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
-from tensorflow.keras.preprocessing import image
 from PIL import Image
-import io
 
 app = Flask(__name__)
 CORS(app)  # allow requests from frontend
 
-classes = [
-    "Acne",
-    "Atopic Dermatitis",
-    "Benign Tumor",
-    "Fungal Infection",
-    "Skin Cancer"
-]
+# Define classes with symptoms and advice
+classes_info = {
+    "Acne": {
+        "symptoms": "Whiteheads, blackheads, pimples on skin",
+        "advice": "Cleanse daily, avoid touching face, use acne treatment products"
+    },
+    "Atopic Dermatitis": {
+        "symptoms": "Itchy, red patches on skin",
+        "advice": "Apply moisturizer and consult dermatologist if persists"
+    },
+    "Benign Tumor": {
+        "symptoms": "Small, painless lumps under the skin",
+        "advice": "Monitor growth and consult a doctor if changes occur"
+    },
+    "Fungal Infection": {
+        "symptoms": "Red, itchy, scaly patches on skin",
+        "advice": "Keep area dry, use antifungal creams as advised by doctor"
+    },
+    "Skin Cancer": {
+        "symptoms": "Unusual moles, sores that don’t heal, color changes",
+        "advice": "See a dermatologist immediately for evaluation"
+    }
+}
 
 # load model
 model = tf.keras.models.load_model(
@@ -40,12 +54,17 @@ def predict():
 
     # predict
     predictions = model.predict(img_array)
-    predicted_class = classes[np.argmax(predictions)]
+    predicted_class = list(classes_info.keys())[np.argmax(predictions)]
     confidence = float(np.max(predictions) * 100)
+
+    # fetch symptoms and advice
+    info = classes_info[predicted_class]
 
     return jsonify({
         "prediction": predicted_class,
-        "confidence": round(confidence, 2)
+        "confidence": round(confidence, 2),
+        "symptoms": info["symptoms"],
+        "advice": info["advice"]
     })
 
 if __name__ == "__main__":
