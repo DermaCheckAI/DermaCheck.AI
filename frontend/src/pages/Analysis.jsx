@@ -15,13 +15,34 @@ export default function Analysis() {
   }, []);
 
   // UPLOAD FUNCTION
-  const handleUpload = async () => {
-    if (!image) {
-      setMessage("Please select or capture an image first.");
-      return;
+const handleUpload = async () => {
+  if (!image) {
+    setMessage("Please select or capture an image first.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", image);
+
+  try {
+    setMessage("Uploading image...");
+    const res = await fetch("http://127.0.0.1:5000/predict", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setMessage(`Prediction: ${data.prediction} (${data.confidence}%)`);
+    } else {
+      setMessage("Error: " + data.error);
     }
-    setMessage("Demo: Image uploaded successfully!");
-  };
+  } catch (err) {
+    console.error(err);
+    setMessage("Failed to connect to backend");
+  }
+};
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
