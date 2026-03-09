@@ -4,18 +4,19 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Analysis() {
-  const navigate = useNavigate();
-
-  
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [message, setMessage] = useState("");
   const [cameraOn, setCameraOn] = useState(false);
   const [analysisDone, setAnalysisDone] = useState(false);
 
-  // ==============================
-  // 🔹 DEMO MODE (backend not connected)
-  // ==============================
+  // New states for backend results
+  const [prediction, setPrediction] = useState("");
+  const [confidence, setConfidence] = useState("");
+  const [symptoms, setSymptoms] = useState("");
+  const [advice, setAdvice] = useState("");
+
+  // DEMO MODE
   useEffect(() => {
     console.log("Running in DEMO mode");
   }, []);
@@ -29,9 +30,43 @@ export default function Analysis() {
       return;
     }
 
-    // demo analysis result
-    setMessage("✔️ Image analyzed successfully");
-    setAnalysisDone(true);
+    const formData = new FormData();
+    formData.append("file", image);
+
+    try {
+      setMessage("Uploading image...");
+      const res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log("Backend response:", data); // <-- Added log for debugging
+
+      if (res.ok) {
+        setPrediction(data.prediction || "-");
+        setConfidence(data.confidence || 0);
+
+        // Handle nested or missing fields
+        setSymptoms(
+          data.symptoms ||
+          data.details?.symptoms ||
+          "No symptoms provided"
+        );
+        setAdvice(
+          data.advice ||
+          data.details?.advice ||
+          "No advice available"
+        );
+
+        setMessage(""); // clear old message
+      } else {
+        setMessage("Error: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to connect to backend");
+    }
   };
 
   return (
@@ -51,17 +86,12 @@ export default function Analysis() {
           🔹 MAIN CONTENT
          ============================== */}
       <div className="relative z-10 p-10 max-w-5xl mx-auto">
-
-        {/* Title */}
         <h1 className="text-4xl font-bold text-center text-cyan-300 mb-10">
           SKIN DISEASES CLASSIFICATION
         </h1>
 
-        {/* ==============================
-            🔹 UPLOAD SECTION
-           ============================== */}
-        <div className="text-center bg-gray-800/40 p-6 rounded-xl border border-gray-700">
-
+        {/* Upload Section */}
+        <div className="text-center mt-10 bg-gray-800 bg-opacity-40 p-6 rounded-xl border border-gray-700">
           <h2 className="text-2xl font-bold text-yellow-300 mb-6">
             Upload Image for Detection
           </h2>
@@ -86,7 +116,7 @@ export default function Analysis() {
             {image ? image.name : "No file chosen"}
           </p>
 
-          {/* Camera Button */}
+          {/* Camera Option */}
           <div className="mt-4">
             <button
               onClick={() => setCameraOn(!cameraOn)}
@@ -124,44 +154,29 @@ export default function Analysis() {
             Analysis
           </button>
 
-          {/* Status Message */}
-          {message && (
-            <p className="text-green-400 mt-4 font-semibold">
-              {message}
-            </p>
-          )}
+          {message && <p className="text-green-400 mt-4">{message}</p>}
         </div>
 
-        {/* ==============================
-            🔽 RESULTS (VISIBLE AFTER ANALYSIS)
-           ============================== */}
-        {analysisDone && (
-          <>
-            {/* Result Cards */}
-            <div className="grid md:grid-cols-2 gap-10 mt-16 mb-10">
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-12 mt-16 mb-11">
+          <div className="flex-1 max-w-md w-full bg-black bg-opacity-50 border border-green-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+            <h2 className="text-gray-300 text-xl">Confidence Score</h2>
+            <p className="text-lg font-bold text-green-400 mt-3">
+              {confidence ? `${confidence}%` : "0%"}
+            </p>
+          </div>
 
-              <div className="bg-black/50 border border-green-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
-                <h2 className="text-gray-300 text-xl">Confidence Score</h2>
-                <p className="text-6xl font-bold text-green-400 mt-3">95%</p>
-              </div>
+          <div className="w-full bg-black bg-opacity-50 border border-pink-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+            <h2 className="text-gray-300 text-xl">Diseases classified</h2>
+            <p className="text-lg font-bold text-pink-400 mt-3">
+              {prediction || "-"}
+            </p>
+          </div>
+        </div>
 
-              <div className="bg-black/50 border border-pink-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
-                <h2 className="text-gray-300 text-xl">Disease Classified</h2>
-                <p className="text-5xl font-bold text-pink-400 mt-3">
-                  Acne
-                </p>
-              </div>
-            </div>
-
-            {/* Symptoms */}
-            <div className="bg-black/50 border border-blue-500 rounded-xl p-8 text-center shadow-xl mb-12">
-              <h2 className="text-gray-300 text-xl mb-3">Symptoms</h2>
-              <p className="text-gray-400">
-                Pimples, redness, inflammation, oily skin
-              </p>
-            </div>
-          </>
-        )}
+        <div className="w-full bg-black bg-opacity-50 border border-blue-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+          <h2 className="text-gray-300 text-xl">Symptoms</h2>
+          <p className="text-lg font-semibold mt-3 text-cyan-300">{symptoms || "-"}</p>
 
         {/* ==============================
             🔥 CARE GUIDANCE CTA (ALWAYS VISIBLE)
@@ -192,6 +207,10 @@ export default function Analysis() {
           </button>
         </div>
 
+        <div className="w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+          <h2 className="text-gray-300 text-xl">Advice</h2>
+          <p className="text-lg font-semibold mt-3 text-yellow-300">{advice || "-"}</p>
+        </div>
       </div>
 
       <Footer />
