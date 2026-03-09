@@ -33,7 +33,7 @@ classes_info = {
 
 # load model
 model = tf.keras.models.load_model(
-    r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_v3.keras",
+    "efficientnet_v3.keras",
     compile=False
 )
 
