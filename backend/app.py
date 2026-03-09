@@ -4,68 +4,98 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 
+# Initialize Flask
 app = Flask(__name__)
-CORS(app)  # allow requests from frontend
+CORS(app)
 
-# Define classes with symptoms and advice
+# Class names in the SAME order used during training
+CLASS_NAMES = [
+    "Acne",
+    "Atopic Dermatitis",
+    "Benign Tumor",
+    "Fungal Infection",
+    "Skin Cancer"
+]
+
+# Symptoms and advice dictionary
 classes_info = {
     "Acne": {
         "symptoms": "Whiteheads, blackheads, pimples on skin",
-        "advice": "Cleanse daily, avoid touching face, use acne treatment products"
+        "advice": "Cleanse your face regularly, avoid touching your face, and use dermatologist-approved acne treatment products."
     },
     "Atopic Dermatitis": {
-        "symptoms": "Itchy, red patches on skin",
-        "advice": "Apply moisturizer and consult dermatologist if persists"
+        "symptoms": "Dry, itchy, red patches on skin",
+        "advice": "Apply moisturizer frequently and consult a dermatologist if irritation persists."
     },
     "Benign Tumor": {
-        "symptoms": "Small, painless lumps under the skin",
-        "advice": "Monitor growth and consult a doctor if changes occur"
+        "symptoms": "Small painless lumps under the skin",
+        "advice": "Usually harmless but monitor size changes and consult a doctor if growth occurs."
     },
     "Fungal Infection": {
-        "symptoms": "Red, itchy, scaly patches on skin",
-        "advice": "Keep area dry, use antifungal creams as advised by doctor"
+        "symptoms": "Red itchy scaly skin patches",
+        "advice": "Keep the affected area dry and use antifungal medication recommended by a doctor."
     },
     "Skin Cancer": {
-        "symptoms": "Unusual moles, sores that don’t heal, color changes",
-        "advice": "See a dermatologist immediately for evaluation"
+        "symptoms": "Unusual mole shape, color changes, sores that do not heal",
+        "advice": "Consult a dermatologist immediately for medical examination."
     }
 }
 
-# load model
-model = tf.keras.models.load_model(
-    "efficientnet_best.keras",
-    compile=False
-)
+# Load trained CNN model
+model = tf.keras.models.load_model("model_v3.keras", compile=False)
+
+print("Model loaded successfully")
+print("Model input shape:", model.input_shape)
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
+
+    # Check if file exists in request
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 
     file = request.files["file"]
 
-    # convert to PIL Image
-    img = Image.open(file).convert("RGB")
-    img = img.resize((224, 224))
+    try:
+        # Open image
+        img = Image.open(file).convert("RGB")
 
-    # preprocess
-    img_array = np.array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
+        # Resize to model input size
+        img = img.resize((200, 200))
 
-    # predict
-    predictions = model.predict(img_array)
-    predicted_class = list(classes_info.keys())[np.argmax(predictions)]
-    confidence = float(np.max(predictions) * 100)
+        # Convert to numpy array
+        img_array = np.array(img)
 
-    # fetch symptoms and advice
-    info = classes_info[predicted_class]
+        # Normalize (same as training)
+        img_array = img_array / 255.0
 
-    return jsonify({
-        "prediction": predicted_class,
-        "confidence": round(confidence, 2),
-        "symptoms": info["symptoms"],
-        "advice": info["advice"]
-    })
+        # Add batch dimension
+        img_array = np.expand_dims(img_array, axis=0)
 
+        # Model prediction
+        predictions = model.predict(img_array, verbose=0)
+
+        predicted_index = np.argmax(predictions)
+        predicted_class = CLASS_NAMES[predicted_index]
+        confidence = float(np.max(predictions) * 100)
+
+        # Get symptoms and advice
+        info = classes_info[predicted_class]
+
+        result = {
+            "prediction": predicted_class,
+            "confidence": round(confidence, 2),
+            "symptoms": info["symptoms"],
+            "advice": info["advice"]
+        }
+
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Run Flask server
 if __name__ == "__main__":
     app.run(debug=True)
