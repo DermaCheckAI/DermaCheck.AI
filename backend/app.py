@@ -33,7 +33,7 @@ classes_info = {
 
 # load model
 model = tf.keras.models.load_model(
-    "efficientnet_v3.keras",
+    "efficientnet_best.keras",
     compile=False
 )
 
