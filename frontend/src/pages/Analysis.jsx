@@ -4,26 +4,24 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Analysis() {
+
+  const navigate = useNavigate(); // FIX
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [message, setMessage] = useState("");
   const [cameraOn, setCameraOn] = useState(false);
   const [analysisDone, setAnalysisDone] = useState(false);
 
-  // New states for backend results
   const [prediction, setPrediction] = useState("");
   const [confidence, setConfidence] = useState("");
   const [symptoms, setSymptoms] = useState("");
   const [advice, setAdvice] = useState("");
 
-  // DEMO MODE
   useEffect(() => {
     console.log("Running in DEMO mode");
   }, []);
 
-  // ==============================
-  // 🔹 ANALYSIS (SIMULATED)
-  // ==============================
   const handleUpload = async () => {
     if (!image) {
       setMessage("❌ Please select or capture an image first");
@@ -41,25 +39,24 @@ export default function Analysis() {
       });
 
       const data = await res.json();
-      console.log("Backend response:", data); // <-- Added log for debugging
 
       if (res.ok) {
         setPrediction(data.prediction || "-");
         setConfidence(data.confidence || 0);
 
-        // Handle nested or missing fields
         setSymptoms(
           data.symptoms ||
           data.details?.symptoms ||
           "No symptoms provided"
         );
+
         setAdvice(
           data.advice ||
           data.details?.advice ||
           "No advice available"
         );
 
-        setMessage(""); // clear old message
+        setMessage("");
       } else {
         setMessage("Error: " + (data.error || "Unknown error"));
       }
@@ -72,9 +69,6 @@ export default function Analysis() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
 
-      {/* ==============================
-          🔹 Background Effects
-         ============================== */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-blue-600 rounded-full blur-3xl opacity-30 animate-pulse"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-600 rounded-full blur-3xl opacity-30 animate-pulse"></div>
@@ -82,21 +76,16 @@ export default function Analysis() {
 
       <Navbar />
 
-      {/* ==============================
-          🔹 MAIN CONTENT
-         ============================== */}
       <div className="relative z-10 p-10 max-w-5xl mx-auto">
         <h1 className="text-4xl font-bold text-center text-cyan-300 mb-10">
           SKIN DISEASES CLASSIFICATION
         </h1>
 
-        {/* Upload Section */}
         <div className="text-center mt-10 bg-gray-800 bg-opacity-40 p-6 rounded-xl border border-gray-700">
           <h2 className="text-2xl font-bold text-yellow-300 mb-6">
             Upload Image for Detection
           </h2>
 
-          {/* File Upload */}
           <label className="bg-yellow-400 text-black px-4 py-2 rounded cursor-pointer font-semibold">
             Choose File
             <input
@@ -106,7 +95,7 @@ export default function Analysis() {
               onChange={(e) => {
                 setImage(e.target.files[0]);
                 setPreview(URL.createObjectURL(e.target.files[0]));
-                setAnalysisDone(false); // reset on new image
+                setAnalysisDone(false);
                 setMessage("");
               }}
             />
@@ -116,7 +105,6 @@ export default function Analysis() {
             {image ? image.name : "No file chosen"}
           </p>
 
-          {/* Camera Option */}
           <div className="mt-4">
             <button
               onClick={() => setCameraOn(!cameraOn)}
@@ -126,7 +114,6 @@ export default function Analysis() {
             </button>
           </div>
 
-          {/* Camera Capture */}
           {cameraOn && (
             <input
               type="file"
@@ -143,7 +130,6 @@ export default function Analysis() {
             />
           )}
 
-          {/* Analyze Button */}
           <button
             onClick={handleUpload}
             className="mt-6 px-12 py-3 rounded-full 
@@ -157,7 +143,6 @@ export default function Analysis() {
           {message && <p className="text-green-400 mt-4">{message}</p>}
         </div>
 
-        {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-12 mt-16 mb-11">
           <div className="flex-1 max-w-md w-full bg-black bg-opacity-50 border border-green-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
             <h2 className="text-gray-300 text-xl">Confidence Score</h2>
@@ -176,41 +161,37 @@ export default function Analysis() {
 
         <div className="w-full bg-black bg-opacity-50 border border-blue-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
           <h2 className="text-gray-300 text-xl">Symptoms</h2>
-          <p className="text-lg font-semibold mt-3 text-cyan-300">{symptoms || "-"}</p>
-
-        {/* ==============================
-            🔥 CARE GUIDANCE CTA (ALWAYS VISIBLE)
-           ============================== */}
-        <div className="mt-14 text-center">
-          <p className="text-gray-300 mb-4 text-lg">
-            {analysisDone
-              ? "Proceed to care guidance and medical recommendations"
-              : "You can explore care guidance even in demo mode"}
+          <p className="text-lg font-semibold mt-3 text-cyan-300">
+            {symptoms || "-"}
           </p>
+        </div>
 
+        <div className="mt-14 text-center">
           <button
             onClick={() =>
               navigate("/suggestions", {
-                state: { disease: "Acne" }, // demo data
+                state: { disease: "Acne" },
               })
             }
-            className={`px-14 py-4 rounded-full 
-              ${
-                analysisDone
-                  ? "bg-gradient-to-r from-green-400 to-cyan-500"
-                  : "bg-gradient-to-r from-gray-400 to-gray-500"
-              }
-              text-black text-xl font-bold
-              hover:scale-110 transition-all shadow-xl`}
+            className="px-14 py-4 rounded-full bg-gradient-to-r from-green-400 to-cyan-500 text-black text-xl font-bold hover:scale-110 transition-all shadow-xl"
           >
             🩺 Care Guidance
           </button>
         </div>
 
-        <div className="w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+        {/* <div className="w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
           <h2 className="text-gray-300 text-xl">Advice</h2>
-          <p className="text-lg font-semibold mt-3 text-yellow-300">{advice || "-"}</p>
-        </div>
+          <p className="text-lg font-semibold mt-3 text-yellow-300">
+            {advice || "-"}
+          </p>
+        </div> */}
+
+        <div className="mt-10 w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
+  <h2 className="text-gray-300 text-xl">Advice</h2>
+  <p className="text-lg font-semibold mt-3 text-yellow-300">
+    {advice || "-"}
+  </p>
+</div>
       </div>
 
       <Footer />
