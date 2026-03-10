@@ -1,15 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from './pages/Login';  
-import Dashboard from './pages/Dashboard';
-// import Analysis from './pages/Analysis';
-// import History from './pages/History';
-// import Suggestions from './pages/Suggestions';
+import Register from './pages/Register';
+import Analysis from './pages/Analysis';
+import Suggestions from './pages/Suggestions';
+import DiseaseInfo from './pages/DiseaseInfo';
+import History from './pages/History';
+//import Recommendations from "./pages/Recommendations";
+
+import { useEffect } from 'react';
 
 export default function App() {
   useEffect(() => {
-    // Initialize test user if not exists
     const existingUser = localStorage.getItem('user');
     if (!existingUser) {
       const testUser = {
@@ -24,17 +25,15 @@ export default function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        {/* <Route path="/analysis" element={<Analysis />} /> */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        {/* <Route path="/history" element={<History />} /> */}
-        {/* <Route path="/suggestions" element={<Suggestions />} /> */}
-        
-      </Routes> 
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/analysis" element={<Analysis />} />
+      <Route path="/suggestions" element={<Suggestions />} />
+      <Route path="/diseaseinfo" element={<DiseaseInfo />} />
+      <Route path="/history" element={<History />} />
+      {/* <Route path="/recommendations" element={<Recommendations />} /> */}
+
+    </Routes>
   );
 }
-//.
