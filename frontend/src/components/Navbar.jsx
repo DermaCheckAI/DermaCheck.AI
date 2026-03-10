@@ -9,9 +9,9 @@ export default function Navbar({ showRegisterButton = true }) {
       <div className="flex items-center gap-6 h-full">
         <Link to="/" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Home</Link>
         <Link to="/analysis" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Analysis</Link>
-        <Link to="/history" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">History</Link>
+        {/* <Link to="/history" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">History</Link> */}
         <Link to="/suggestions" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Suggestions</Link>
-        <Link to="/dashboard" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Dashboard</Link>
+        {/* <Link to="/dashboard" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Dashboard</Link> */}
         <Link to="/diseaseinfo" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Diseaseinfo</Link>
 
         {showRegisterButton && (
