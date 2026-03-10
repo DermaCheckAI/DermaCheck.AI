@@ -1,0 +1,45 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+<title>Skin Disease classifier</title>
+</head>
+
+<body>
+
+<h2>Upload Skin Image</h2>
+
+<input type="file" id="image">
+<button onclick="predict()">Predict</button>
+
+<h3 id="result"></h3>
+
+<script>
+
+async function predict(){
+
+    const file = document.getElementById("image").files[0]
+
+    if(!file){
+        alert("Select an image first")
+        return
+    }
+
+    const formData = new FormData()
+    formData.append("image", file)
+
+    const response = await fetch("/predict",{
+        method:"POST",
+        body:formData
+    })
+
+    const data = await response.json()
+
+    document.getElementById("result").innerText =
+        "Prediction: " + data.class +
+        " | Confidence: " + data.confidence
+}
+
+</script>
+
+</body>
+</html> -->
