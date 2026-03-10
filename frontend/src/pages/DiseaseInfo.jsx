@@ -29,8 +29,8 @@ export default function DiseaseInfo() {
 
         {/* ===== ACNE ===== */}
         <DiseaseBlock
-          title="Acne Vulgaris"
-          description="Acne vulgaris is a chronic inflammatory disorder of the pilosebaceous unit, commonly affecting adolescents and young adults."
+          title="Acne"
+          description="Acne is a chronic inflammatory disorder of the pilosebaceous unit, commonly affecting adolescents and young adults."
           symptoms={[
             "Blackheads and whiteheads",
             "Inflammatory pimples",
