@@ -101,7 +101,7 @@ export default function Analysis() {
             />
           </label>
 
-          <p className="text-gray-400 mt-2">
+          {/* <p className="text-gray-400 mt-2">
             {image ? image.name : "No file chosen"}
           </p>
 
@@ -128,17 +128,17 @@ export default function Analysis() {
                 setMessage("");
               }}
             />
-          )}
+          )} */}
 
           <button
-            onClick={handleUpload}
-            className="mt-6 px-12 py-3 rounded-full 
-                       bg-gradient-to-r from-cyan-500 to-purple-600
-                       text-white text-xl font-bold
-                       hover:scale-105 transition-all shadow-lg"
-          >
-            Analysis
-          </button>
+  onClick={handleUpload}
+  className="mt-6 ml-4 px-12 py-3 rounded-full
+  bg-gradient-to-r from-cyan-500 to-purple-600
+  text-white text-xl font-bold
+  hover:scale-105 transition-all shadow-lg"
+>
+  Analysis
+</button>
 
           {message && <p className="text-green-400 mt-4">{message}</p>}
         </div>
