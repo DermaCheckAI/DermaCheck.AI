@@ -3,14 +3,18 @@ from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-from tensorflow.keras.layers import Dense as KDense
+import tensorflow.keras.layers as layers
 
-# Custom Layer to handle the 'quantization_config' error in Keras 3/TensorFlow 2.16+
-class CleanDense(KDense):
+# 1. THE FIX: Create a custom Dense layer that ignores 'quantization_config'
+@tf.keras.utils.register_keras_serializable(package="Custom", name="Dense")
+class CleanDense(layers.Dense):
     def __init__(self, *args, **kwargs):
-        # Remove the unsupported argument that's causing the crash
         kwargs.pop("quantization_config", None)
         super().__init__(*args, **kwargs)
+
+# 2. THE MONKEY PATCH: Forcibly replace the internal Keras Dense with our fix
+# This prevents Keras from using the broken internal version during deserialization.
+layers.Dense = CleanDense
 
 app = Flask(__name__)
 CORS(app)
@@ -39,57 +43,64 @@ classes_info = {
     }
 }
 
-# Load model using the custom class mapping
-MODEL_PATH = "C:\\Users\\kisan\\DermaCheck.AI\\backend\\efficientnet_b3_new.keras"
+# Initialize model as None to avoid NameError if loading fails
+model = None
+MODEL_PATH = r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_b3_new.keras"
 
+print("--- Starting Server ---")
 try:
+    # We pass the custom object mapping as a backup
     model = tf.keras.models.load_model(
         MODEL_PATH,
         compile=False,
-        custom_objects={
-            "Dense": CleanDense  # Intercept 'Dense' calls and use our fixed version
-        }
+        custom_objects={"Dense": CleanDense}
     )
-    print("Model loaded successfully!")
+    print("SUCCESS: Model loaded successfully!")
 except Exception as e:
-    print(f"Error loading model: {e}")
+    print(f"CRITICAL ERROR: Could not load model. Error: {e}")
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    # Safety check if model failed to load at startup
+    if model is None:
+        return jsonify({"error": "Model not initialized on server. Check console logs."}), 500
+
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 
-    file = request.files["file"]
+    try:
+        file = request.files["file"]
 
-    # Convert to PIL Image
-    img = Image.open(file).convert("RGB")
-    img = img.resize((224, 224))
+        # Convert to PIL Image
+        img = Image.open(file).convert("RGB")
+        img = img.resize((224, 224))
 
-    # Preprocess
-    # NOTE: EfficientNet usually handles rescaling internally. 
-    # If your accuracy is low, try removing the '/ 255.0' below.
-    img_array = np.array(img)
-    img_array = np.expand_dims(img_array, axis=0)
+        # Preprocess
+        # Note: EfficientNetB3 usually scales internally. 
+        # If your model was trained on 0-1, add ' / 255.0' back to img_array.
+        img_array = np.array(img)
+        img_array = np.expand_dims(img_array, axis=0)
 
-    # Predict
-    predictions = model.predict(img_array)
-    
-    # Get the index of the highest confidence score
-    class_idx = np.argmax(predictions)
-    class_names = list(classes_info.keys())
-    
-    predicted_class = class_names[class_idx]
-    confidence = float(np.max(predictions) * 100)
+        # Predict
+        predictions = model.predict(img_array)
+        class_idx = np.argmax(predictions)
+        class_names = list(classes_info.keys())
+        
+        predicted_class = class_names[class_idx]
+        confidence = float(np.max(predictions) * 100)
 
-    # Fetch symptoms and advice
-    info = classes_info[predicted_class]
+        # Fetch symptoms and advice
+        info = classes_info[predicted_class]
 
-    return jsonify({
-        "prediction": predicted_class,
-        "confidence": round(confidence, 2),
-        "symptoms": info["symptoms"],
-        "advice": info["advice"]
-    })
+        return jsonify({
+            "prediction": predicted_class,
+            "confidence": round(confidence, 2),
+            "symptoms": info["symptoms"],
+            "advice": info["advice"]
+        })
+    except Exception as e:
+        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # debug=False is sometimes better when troubleshooting model loads to avoid double-loading
+    app.run(debug=True, port=5000)
