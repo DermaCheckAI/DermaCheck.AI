@@ -30,7 +30,7 @@ def predict():
     
     try:
         # 1. Processing
-        img = Image.open(file).convert("RGB").resize((224, 224))
+        img = Image.open(file).convert("RGB").resize((300,300))
         img_array = np.array(img).astype('float32')
         img_array = np.expand_dims(img_array, axis=0)
         
