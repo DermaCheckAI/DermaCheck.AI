@@ -40,7 +40,7 @@ classes_info = {
 }
 
 # Load model using the custom class mapping
-MODEL_PATH = r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_b3_new.keras"
+MODEL_PATH = "C:\\Users\\kisan\\DermaCheck.AI\\backend\\efficientnet_b3_new.keras"
 
 try:
     model = tf.keras.models.load_model(
