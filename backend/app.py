@@ -3,13 +3,25 @@ from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-import tensorflow.keras.layers as layers
 
-# 1. THE FIX: Define the custom layer
-class CleanDense(layers.Dense):
+# 1. Setup the Custom Layer with a robust config cleaner
+class CleanDense(tf.keras.layers.Dense):
     def __init__(self, *args, **kwargs):
         kwargs.pop("quantization_config", None)
         super().__init__(*args, **kwargs)
+
+    @classmethod
+    def from_config(cls, config):
+        config.pop("quantization_config", None)
+        return super().from_config(config)
+
+# 2. THE GLOBAL HOOK: Force Keras to use our version for all known paths
+tf.keras.utils.get_custom_objects().update({
+    'Dense': CleanDense,
+    'KDense': CleanDense,
+    'keras.layers.Dense': CleanDense,
+    'keras.src.layers.core.dense.Dense': CleanDense
+})
 
 app = Flask(__name__)
 CORS(app)
@@ -25,36 +37,18 @@ classes_info = {
 model = None
 MODEL_PATH = r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_b3_new.keras"
 
-print("--- Attempting Deep-Mapping Model Load ---")
+print("--- Attempting Global Hook Load ---")
 try:
-    # 2. THE DEEP MAP: We map BOTH the short name and the internal Keras path
-    model = tf.keras.models.load_model(
-        MODEL_PATH,
-        compile=False,
-        custom_objects={
-            "Dense": CleanDense,
-            "keras.src.layers.core.dense.Dense": CleanDense,
-            "keras.layers.Dense": CleanDense
-        }
-    )
-    print("SUCCESS: Model loaded successfully!")
+    # compile=False is vital to ignore training/quantization metadata
+    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+    print("✅ SUCCESS: Model loaded successfully!")
 except Exception as e:
-    print(f"FAILED AGAIN: {e}")
-    print("\n--- EMERGENCY FALLBACK ---")
-    try:
-        # 3. EMERGENCY FALLBACK: If .keras fails, try loading just the weights 
-        # (This only works if you have the model architecture defined in code, 
-        # but let's try one more loading trick first)
-        import keras
-        model = keras.models.load_model(MODEL_PATH, compile=False, safe_mode=False)
-        print("SUCCESS: Loaded using safe_mode=False!")
-    except Exception as e2:
-        print(f"Fallback failed: {e2}")
+    print(f"❌ Load failed: {e}")
 
 @app.route("/predict", methods=["POST"])
 def predict():
     if model is None:
-        return jsonify({"error": "Model not initialized. Check server logs for the Traceback."}), 500
+        return jsonify({"error": "Model not loaded. Check server console."}), 500
 
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
@@ -64,16 +58,28 @@ def predict():
         img = Image.open(file).convert("RGB")
         img = img.resize((224, 224))
         
-        # Preprocessing for EfficientNetB3
+        # Preprocessing
         img_array = np.array(img).astype('float32')
         img_array = np.expand_dims(img_array, axis=0)
 
+        # Make Prediction
         predictions = model.predict(img_array)
-        class_idx = np.argmax(predictions)
+        
+        # Ensure we're getting a flat array for argmax
+        if len(predictions.shape) > 1:
+            pred_probs = predictions[0]
+        else:
+            pred_probs = predictions
+
+        class_idx = np.argmax(pred_probs)
         class_names = list(classes_info.keys())
         
+        # Safety check for class index
+        if class_idx >= len(class_names):
+            return jsonify({"error": "Model output classes do not match classes_info"}), 500
+            
         predicted_class = class_names[class_idx]
-        confidence = float(np.max(predictions) * 100)
+        confidence = float(np.max(pred_probs) * 100)
 
         return jsonify({
             "prediction": predicted_class,
@@ -82,6 +88,7 @@ def predict():
             "advice": classes_info[predicted_class]["advice"]
         })
     except Exception as e:
+        print(f"Prediction error: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
