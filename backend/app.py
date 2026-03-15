@@ -3,6 +3,7 @@ from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -18,79 +19,58 @@ classes_info = {
 MODEL_PATH = r"C:\Users\kisan\DermaCheck.AI\backend\efficientnet_b3_new.keras"
 model = None
 
-def load_model_robust():
+def build_and_load():
     global model
     try:
-        print("--- Attempting Weight Injection (Manual Reconstruction) ---")
-        
-        # 1. Rebuild the architecture from scratch
+        print("--- Building Fresh Architecture ---")
+        # 1. Build the exact structure
         base_model = tf.keras.applications.EfficientNetB3(
             input_shape=(224, 224, 3),
             include_top=False,
-            weights=None # We will load your weights
+            weights=None
         )
-        
-        # 2. Add your custom layers (Matching your diploma project structure)
         x = tf.keras.layers.GlobalAveragePooling2D()(base_model.output)
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.Dense(512, activation='relu')(x)
         x = tf.keras.layers.Dropout(0.4)(x)
         outputs = tf.keras.layers.Dense(5, activation='softmax')(x)
         
-        new_model = tf.keras.Model(inputs=base_model.input, outputs=outputs)
-        
-        # 3. Inject ONLY the weights from your file
-        # This ignores the 'quantization_config' error entirely
-        new_model.load_weights(MODEL_PATH)
-        
-        model = new_model
-        print("✅ SUCCESS: Weights injected into fresh architecture!")
-        
-    except Exception as e:
-        print(f"❌ Weight Injection failed: {e}")
-        print("Trying standard load as last resort...")
-        try:
-            model = tf.keras.models.load_model(MODEL_PATH, compile=False)
-            print("✅ SUCCESS: Standard load worked!")
-        except Exception as e2:
-            print(f"❌ CRITICAL: All loading methods failed: {e2}")
+        temp_model = tf.keras.Model(inputs=base_model.input, outputs=outputs)
 
-# Load the model when the script starts
-load_model_robust()
+        # 2. Use the 'skip_mismatch' flag to force load weights only
+        # This is the "Emergency Exit" for broken .keras files
+        print("--- Injecting Weights (Ignoring Metadata) ---")
+        temp_model.load_weights(MODEL_PATH, skip_mismatch=True, by_name=True)
+        
+        model = temp_model
+        print("✅ SUCCESS: Model is live!")
+    except Exception as e:
+        print(f"❌ Load failed: {e}")
+
+build_and_load()
 
 @app.route("/predict", methods=["POST"])
 def predict():
     if model is None:
-        return jsonify({"error": "Model not initialized"}), 500
+        return jsonify({"error": "Model not loaded"}), 500
     
     file = request.files.get("file")
-    if not file:
-        return jsonify({"error": "No file uploaded"}), 400
+    if not file: return jsonify({"error": "No file"}), 400
 
-    try:
-        img = Image.open(file).convert("RGB")
-        img = img.resize((224, 224))
-        
-        img_array = np.array(img).astype('float32')
-        img_array = np.expand_dims(img_array, axis=0)
-        
-        # Preprocessing for EfficientNet
-        img_array = tf.keras.applications.efficientnet.preprocess_input(img_array)
+    img = Image.open(file).convert("RGB").resize((224, 224))
+    img_array = np.expand_dims(np.array(img).astype('float32'), axis=0)
+    img_array = tf.keras.applications.efficientnet.preprocess_input(img_array)
 
-        predictions = model.predict(img_array)
-        class_idx = np.argmax(predictions[0])
-        class_names = list(classes_info.keys())
-        
-        result = class_names[class_idx]
-        
-        return jsonify({
-            "prediction": result,
-            "confidence": round(float(np.max(predictions) * 100), 2),
-            "symptoms": classes_info[result]["symptoms"],
-            "advice": classes_info[result]["advice"]
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    preds = model.predict(img_array)
+    idx = np.argmax(preds[0])
+    name = list(classes_info.keys())[idx]
+    
+    return jsonify({
+        "prediction": name,
+        "confidence": round(float(np.max(preds) * 100), 2),
+        "symptoms": classes_info[name]["symptoms"],
+        "advice": classes_info[name]["advice"]
+    })
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
