@@ -9,7 +9,7 @@ WEIGHTS_FILE = os.path.join(TEMP_EXTRACT_DIR, "model.weights.h5")
 
 def build_shell():
     # Simple shell - no custom names to avoid conflicts
-    base = tf.keras.applications.EfficientNetB3(input_shape=(224, 224, 3), include_top=False, weights=None)
+    base = tf.keras.applications.EfficientNetB3(input_shape=(300,300,3), include_top=False, weights=None)
     x = tf.keras.layers.GlobalAveragePooling2D()(base.output)
     x = tf.keras.layers.BatchNormalization()(x)
     x = tf.keras.layers.Dense(512, activation='relu')(x)
