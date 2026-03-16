@@ -16,26 +16,40 @@ export default function Home() {
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const submit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMsg('');
+  e.preventDefault();
+  setLoading(true);
+  setMsg(''); // Clear previous messages
 
-    try {
-      // 1. USE FIREBASE LOGIN INSTEAD OF FETCH
-      await login(form.email, form.password);
-      
-      setMsg('Login successful! Redirecting...');
-      
-      // 2. USE NAVIGATE FOR SMOOTHER TRANSITION
-      setTimeout(() => navigate('/analysis'), 2000);
-    } catch (err) {
-      // Error handling is actually inside your firebase.js toast, 
-      // but we set it here for the UI text too
-      setMsg(err.message || 'Login failed. Please check your credentials.');
-    } finally {
-      setLoading(false);
+  try {
+    // 1. Firebase will throw an error here if credentials are invalid
+    await login(form.email, form.password);
+    
+    // 2. ONLY if the line above succeeds, do we set the success message
+    setMsg('Login successful! Redirecting...');
+    
+    // 3. Trigger redirect
+    setTimeout(() => {
+      navigate('/analysis');
+    }, 1500);
+
+  } catch (err) {
+    // 4. This block runs ONLY if login fails
+    console.error("Login Error:", err.code);
+    
+    // Friendly error messages based on Firebase error codes
+    if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+      setMsg("❌ Invalid email or password.");
+    } else if (err.code === 'auth/invalid-email') {
+      setMsg("❌ Please enter a valid email address.");
+    } else {
+      setMsg("❌ Login failed. Please try again.");
     }
-  };
+    
+    // Crucially: Loading stops, and navigate() is NEVER called
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ... (Keep all your existing scroll logic and useEffect) ...
   const scrollToFeatures = () => {

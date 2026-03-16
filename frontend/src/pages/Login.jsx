@@ -23,24 +23,31 @@ const Login = () => {
     }
   }, [searchParams]);
 
-  const user_auth = async (event) => {
-  event.preventDefault();
-  try {
-    if (signState === "Sign In") {
-      await login(email, pass);
-    } else {
-      await signup(name, email, pass);
+const user_auth = async (event) => {
+    event.preventDefault();
+    
+    // Optional: Add a local loading state if you want to disable the button
+    try {
+      if (signState === "Sign In") {
+        await login(email, pass);
+        toast.success("Logged in successfully!");
+      } else {
+        await signup(name, email, pass);
+        toast.success("Account created successfully!");
+      }
+
+      // ✅ This ONLY runs if login/signup did not throw an error
+      setTimeout(() => {
+        navigate("/analysis"); 
+      }, 1500);
+
+    } catch (error) {
+      // ❌ This runs if password is wrong or user doesn't exist
+      // The error message from Firebase will be displayed in the toast
+      console.error("Auth Error:", error.code);
+      toast.error(error.message); 
     }
-
-    // ✅ Change "/dashboard" to "/analysis"
-    setTimeout(() => {
-      navigate("/analysis"); 
-    }, 1500);
-
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
+  };
 
   return (
     <>
