@@ -93,11 +93,18 @@ def predict():
         prediction = CLASSES[idx]
         confidence = float(preds[0][idx]) * 100
 
-        return jsonify({
-            "prediction": prediction,
-            "confidence": round(confidence, 2)
+        # Fetch symptoms and advice from your dictionary
+        details = DISEASE_DETAILS.get(prediction, {
+            "symptoms": "Details not found.",
+            "advice": "Consult a professional."
         })
 
+        return jsonify({
+            "prediction": prediction,
+            "confidence": round(confidence, 2),
+            "symptoms": details["symptoms"], # Send to frontend
+            "advice": details["advice"]       # Send to frontend
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
