@@ -7,6 +7,7 @@ import DiseaseInfo from './pages/DiseaseInfo';
 import History from './pages/History';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Register from './pages/Register';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register/>}/>
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/suggestions" element={<Suggestions />} />
         <Route path="/diseaseinfo" element={<DiseaseInfo />} />

@@ -4,6 +4,7 @@ import { login } from '../firebase'; // Import your Firebase login helper
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
+
 export default function Home() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
