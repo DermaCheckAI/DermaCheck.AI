@@ -24,25 +24,23 @@ const Login = () => {
   }, [searchParams]);
 
   const user_auth = async (event) => {
-    event.preventDefault();
-
-    try {
-      if (signState === "Sign In") {
-        await login(email, pass);
-        toast.success("Logged in successfully!");
-      } else {
-        await signup(name, email, pass);
-        toast.success("Account created successfully!");
-      }
-
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
-
-    } catch (error) {
-      toast.error(error.message);
+  event.preventDefault();
+  try {
+    if (signState === "Sign In") {
+      await login(email, pass);
+    } else {
+      await signup(name, email, pass);
     }
-  };
+
+    // ✅ Change "/dashboard" to "/analysis"
+    setTimeout(() => {
+      navigate("/analysis"); 
+    }, 1500);
+
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
 
   return (
     <>
