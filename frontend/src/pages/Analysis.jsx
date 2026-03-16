@@ -31,6 +31,7 @@ export default function Analysis() {
   }, [navigate]);
 
   // 2. Handle Flask Backend Upload
+ // 2. Handle Flask Backend Upload
   const handleUpload = async () => {
     if (!image) {
       setMessage("❌ Please select an image first");
@@ -44,6 +45,12 @@ export default function Analysis() {
       setLoading(true);
       setMessage("Processing scan...");
       
+      // Reset previous results while loading new ones
+      setPrediction("");
+      setConfidence("");
+      setSymptoms("");
+      setAdvice("");
+
       const res = await fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
         body: formData,
@@ -52,16 +59,17 @@ export default function Analysis() {
       const data = await res.json();
 
       if (res.ok) {
-        setPrediction(data.prediction || "Unknown");
-        setConfidence(data.confidence || 0);
-        setSymptoms(data.symptoms || data.details?.symptoms || "No symptoms found.");
-        setAdvice(data.advice || data.details?.advice || "No specific advice.");
-        setMessage("");
+        // These keys now match your updated app.py exactly
+        setPrediction(data.prediction);
+        setConfidence(data.confidence);
+        setSymptoms(data.symptoms); 
+        setAdvice(data.advice);
+        setMessage("✅ Analysis Complete");
       } else {
         setMessage("Error: " + (data.error || "Server error"));
       }
     } catch (err) {
-      setMessage("❌ Backend not connected (Check Flask)");
+      setMessage("❌ Backend not connected. Ensure Flask is running on port 5000.");
     } finally {
       setLoading(false);
     }
