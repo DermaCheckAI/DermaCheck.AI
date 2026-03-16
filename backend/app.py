@@ -41,7 +41,7 @@ DISEASE_DETAILS = {
 }
 
 # Path to exported model
-MODEL_PATH = r"C:\Users\kisan\DermaCheck.AI\backend\skin_model_export"
+MODEL_PATH = "skin_model_export"
 
 # Load the model
 try:
