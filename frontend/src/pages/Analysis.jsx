@@ -101,36 +101,7 @@ export default function Analysis() {
             />
           </label>
 
-          {/* <p className="text-gray-400 mt-2">
-            {image ? image.name : "No file chosen"}
-          </p>
-
-          <div className="mt-4">
-            <button
-              onClick={() => setCameraOn(!cameraOn)}
-              className="bg-cyan-500 px-6 py-2 rounded-full text-white font-semibold hover:scale-105 transition"
-            >
-              {cameraOn ? "Close Camera" : "Open Camera"}
-            </button>
-          </div>
-
-          {cameraOn && (
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              className="block mx-auto mt-4 text-white"
-              onChange={(e) => {
-                setImage(e.target.files[0]);
-                setPreview(URL.createObjectURL(e.target.files[0]));
-                setCameraOn(false);
-                setAnalysisDone(false);
-                setMessage("");
-              }}
-            />
-          )} */}
-
-          <button
+  <button
   onClick={handleUpload}
   className="mt-6 ml-4 px-12 py-3 rounded-full
   bg-gradient-to-r from-cyan-500 to-purple-600
@@ -173,18 +144,14 @@ export default function Analysis() {
                 state: { disease: "Acne" },
               })
             }
+
+
+            
             className="px-14 py-4 rounded-full bg-gradient-to-r from-green-400 to-cyan-500 text-black text-xl font-bold hover:scale-110 transition-all shadow-xl"
           >
             🩺 Care Guidance
           </button>
         </div>
-
-        {/* <div className="w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
-          <h2 className="text-gray-300 text-xl">Advice</h2>
-          <p className="text-lg font-semibold mt-3 text-yellow-300">
-            {advice || "-"}
-          </p>
-        </div> */}
 
         <div className="mt-10 w-full bg-black bg-opacity-50 border border-yellow-500 rounded-xl p-8 text-center shadow-xl hover:scale-105 transition">
   <h2 className="text-gray-300 text-xl">Advice</h2>
