@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Register from './pages/Register';
+import Login from './pages/Register';
 import Analysis from './pages/Analysis';
 import Suggestions from './pages/Suggestions';
 import DiseaseInfo from './pages/DiseaseInfo';
@@ -16,7 +16,7 @@ export default function App() {
       
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/suggestions" element={<Suggestions />} />
         <Route path="/diseaseinfo" element={<DiseaseInfo />} />

@@ -130,8 +130,93 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Rest of the UI (Features, FAQ, Footer) stays the same */}
+      {/* Features Section */}
+      <section id="features-section" className="relative z-5 w-full bg-gradient-to-b from-transparent via-gray-900 to-gray-900 py-20 px-8">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">Why Choose DermaCheck.AI?</h2>
+          <p className="text-center text-gray-300 text-lg mb-16">AI technology for accurate skin analysis and personalized recommendations</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
+              <div className="text-4xl mb-4 text-cyan-400">🔬</div>
+              <h3 className="text-2xl font-bold text-cyan-300 mb-3">AI-Powered Analysis</h3>
+              <p className="text-gray-300">Advanced machine learning algorithms analyze skin conditions with accuracy in seconds.</p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
+              <div className="text-4xl mb-4 text-blue-400">📋</div>
+              <h3 className="text-2xl font-bold text-blue-300 mb-3">Personalized Reports</h3>
+              <p className="text-gray-300">Get detailed analysis reports with specific recommendations tailored to your skin type and condition.</p>
+            </div>
+
+
+            {/* Feature 3 */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
+              <div className="text-4xl mb-4 text-purple-400">⚡</div>
+              <h3 className="text-2xl font-bold text-purple-300 mb-3">Instant Results</h3>
+              <p className="text-gray-300">Get analysis results in seconds with real-time skin condition assessment.</p>
+            </div>
+        </div> 
+        
+          {/* CTA Section */}
+          <div className="mt-20 text-center">
+            <h3 className="text-3xl font-bold text-white mb-6">Ready to Transform Your Skincare?</h3>
+            <Link to="/register" className="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold px-12 py-4 rounded-xl shadow-lg hover:shadow-cyan-500/50 transition-all text-lg">
+              Start Your Analysis Now !
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="relative z-5 w-full bg-gradient-to-b from-gray-900 to-gray-950 py-20 px-8">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">Frequently Asked Questions</h2>
+          
+          <div className="space-y-6">
+            {/* FAQ 1 */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-xl p-6 hover:border-opacity-50 transition-all">
+              <h4 className="text-xl font-bold text-cyan-400 mb-2">How accurate is DermaCheck.AI?</h4>
+              <p className="text-gray-300">Our AI model is trained on thousands of verified skin conditions with ???% [TO BE UPDATED] accuracy rate. However, it's recommended to consult a dermatologist for serious concerns.</p>
+            </div>
+
+
+            {/* FAQ 3 */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-xl p-6 hover:border-opacity-50 transition-all">
+              <h4 className="text-xl font-bold text-purple-400 mb-2">Can I use this on mobile?</h4>
+              <p className="text-gray-300">Yes! DermaCheck.AI is fully responsive and works seamlessly on all devices - mobile, tablet, and desktop.</p>
+            </div>
+
+
+            {/* FAQ 5 */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-xl p-6 hover:border-opacity-50 transition-all">
+              <h4 className="text-xl font-bold text-blue-400 mb-2">Is this analysis free?</h4>
+              <p className="text-gray-300">Yes! Sign up for free and get free skin analyses to try out DermaCheck.AI.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <Footer />
+
+      {/* Scroll to Top Button */}
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-full p-3 shadow-lg hover:shadow-cyan-500/50 transition-all transform hover:scale-110 duration-300"
+          aria-label="Scroll to top"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }
+
+
+
+ 
