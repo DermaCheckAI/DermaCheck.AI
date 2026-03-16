@@ -16,6 +16,30 @@ CLASSES = [
     "Skin Cancer"
 ]
 
+# Symptoms and Advice Data
+DISEASE_DETAILS = {
+    "Acne": {
+        "symptoms": "Red bumps (pimples), whiteheads, blackheads, and painful cysts typically on the face, back, or shoulders.",
+        "advice": "Keep skin clean, avoid popping pimples, and use non-comedogenic products. Consult a dermatologist for persistent cases."
+    },
+    "Atopic Dermatitis": {
+        "symptoms": "Dry, itchy skin, red to brownish-gray patches, and small raised bumps that may leak fluid when scratched.",
+        "advice": "Moisturize frequently, avoid harsh soaps, and identify triggers like allergens or stress. Topical steroids may be needed."
+    },
+    "Benign Tumor": {
+        "symptoms": "Non-cancerous growths like moles or seborrheic keratosis. Usually have smooth borders and slow growth.",
+        "advice": "Generally harmless, but monitor for changes in size, shape, or color. If it becomes irritated, see a professional."
+    },
+    "Fungal Infection": {
+        "symptoms": "Red, itchy, scaly patches often in a ring shape (ringworm). May cause peeling or cracking of the skin.",
+        "advice": "Keep the area dry and clean. Use over-the-counter antifungal creams. Do not share towels or personal items."
+    },
+    "Skin Cancer": {
+        "symptoms": "Irregularly shaped moles, sores that don't heal, or new growths that change rapidly in color or size.",
+        "advice": "CRITICAL: Please consult an oncologist or dermatologist immediately for a professional biopsy and screening."
+    }
+}
+
 # Path to exported model
 MODEL_PATH = r"C:\Users\kisan\DermaCheck.AI\backend\skin_model_export"
 
