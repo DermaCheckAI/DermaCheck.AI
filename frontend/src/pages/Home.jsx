@@ -175,9 +175,9 @@ export default function Home() {
 
             {/* Feature 4 */}
             <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-2xl p-8 hover:border-opacity-50 transition-all group">
-              <div className="text-4xl mb-4 text-cyan-400">🌐</div>
-              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Multi-Language Support</h3>
-              <p className="text-gray-300">Use the system in multiple language for easy understanding and better accessibility for different region.</p>
+              <div className="text-4xl mb-4 text-cyan-400">🧬</div>
+              <h3 className="text-2xl font-bold text-cyan-300 mb-3">Skin Disease Classification</h3>
+              <p className="text-gray-300">The system classifies different types of skin diseases using advanced machine learning algorithms based on the uploaded skin image.</p>
             </div>
             
             {/* Feature 5 */}
