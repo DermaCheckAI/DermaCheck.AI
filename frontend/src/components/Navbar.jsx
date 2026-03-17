@@ -6,7 +6,7 @@ export default function Navbar({ showRegisterButton = true }) {
   const handleLogout = async () => {
     try {
       await logout();
-      window.location.href = "/login"; // 🔥 FINAL FIX (force reload)
+window.location.replace("/login");
     } catch (error) {
       console.error(error);
     }
@@ -28,12 +28,12 @@ export default function Navbar({ showRegisterButton = true }) {
         <Link to="/diseaseinfo" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Diseaseinfo</Link>
 
         {/* 🔴 Logout Button */}
-        <button
+        {/* <button
           onClick={handleLogout}
           className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white"
         >
           Logout
-        </button>
+        </button> */}
 
       </div>
 

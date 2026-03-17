@@ -14,7 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
-  // ✅ ONLY FIX: URL madhun mode gheto
+  // ✅ URL madhun mode gheto
   useEffect(() => {
     if (searchParams.get("mode") === "signup") {
       setSignState("Sign Up");
@@ -23,10 +23,9 @@ const Login = () => {
     }
   }, [searchParams]);
 
-const user_auth = async (event) => {
+  const user_auth = async (event) => {
     event.preventDefault();
     
-    // Optional: Add a local loading state if you want to disable the button
     try {
       if (signState === "Sign In") {
         await login(email, pass);
@@ -36,14 +35,10 @@ const user_auth = async (event) => {
         toast.success("Account created successfully!");
       }
 
-      // ✅ This ONLY runs if login/signup did not throw an error
-      setTimeout(() => {
-        navigate("/analysis"); 
-      }, 1500);
+      // ❌ navigate("/analysis") kadhla
+      // 👉 App.jsx automatically redirect karnaar
 
     } catch (error) {
-      // ❌ This runs if password is wrong or user doesn't exist
-      // The error message from Firebase will be displayed in the toast
       console.error("Auth Error:", error.code);
       toast.error(error.message); 
     }

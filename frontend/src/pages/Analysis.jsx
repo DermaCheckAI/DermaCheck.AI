@@ -23,7 +23,8 @@ export default function Analysis() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
-        navigate("/login"); // ✅ ONLY CHANGE (register → login)
+        // navigate("/login"); // ✅ ONLY CHANGE (register → login)
+        window.location.replace("/login");
       }
     });
     return () => unsubscribe();
