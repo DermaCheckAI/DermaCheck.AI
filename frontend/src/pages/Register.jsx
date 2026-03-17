@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 import { useState } from 'react';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase"; // make sure path is correct
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-
+import Analysis from './Analysis';
 export default function Register() {
   const [form, setForm] = useState({
     mobile: '',
@@ -28,23 +30,30 @@ export default function Register() {
     }
 
     try {
-      // Replace with your backend URL
-      const res = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mobile: form.mobile,
-          email: form.email,
-          password: form.password,
-          fullName: form.fullName
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Registration failed');
-      setMsg('Registration successful! Redirecting to login...');
-      setTimeout(() => window.location.href = '/', 2000);
+      // 🔥 Firebase Signup
+      await createUserWithEmailAndPassword(auth, form.email, form.password);
+
+      // (optional) you can store extra data like name/mobile in Firestore later
+
+      setMsg('Registration successful! Redirecting...');
+      
+      setTimeout(() => {
+        window.location.href = './analysis'; // unchanged
+      }, 2000);
+
     } catch (err) {
-      setMsg(err.message);
+      console.error(err);
+
+      if (err.code === "auth/email-already-in-use") {
+        setMsg("❌ Email already exists");
+      } else if (err.code === "auth/invalid-email") {
+        setMsg("❌ Invalid email");
+      } else if (err.code === "auth/weak-password") {
+        setMsg("❌ Password should be at least 6 characters");
+      } else {
+        setMsg("❌ Registration failed");
+      }
+
     } finally {
       setLoading(false);
     }
@@ -129,10 +138,14 @@ export default function Register() {
               </p>
             )}
 
-            <p className="text-center text-gray-400 mt-6">Already have an account? <Link to="/" className="text-cyan-400 hover:text-cyan-300 font-semibold">Login</Link></p>
+            <p className="text-center text-gray-400 mt-6">
+              Already have an account? 
+              <Link to="/" className="text-cyan-400 hover:text-cyan-300 font-semibold"> Login</Link>
+            </p>
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );
