@@ -23,15 +23,13 @@ export default function Analysis() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
-        // If not logged in, send to Register/Login
-        navigate("/register");
+        navigate("/login"); // ✅ ONLY CHANGE (register → login)
       }
     });
     return () => unsubscribe();
   }, [navigate]);
 
   // 2. Handle Flask Backend Upload
- // 2. Handle Flask Backend Upload
   const handleUpload = async () => {
     if (!image) {
       setMessage("❌ Please select an image first");
@@ -45,7 +43,6 @@ export default function Analysis() {
       setLoading(true);
       setMessage("Processing scan...");
       
-      // Reset previous results while loading new ones
       setPrediction("");
       setConfidence("");
       setSymptoms("");
@@ -59,7 +56,6 @@ export default function Analysis() {
       const data = await res.json();
 
       if (res.ok) {
-        // These keys now match your updated app.py exactly
         setPrediction(data.prediction);
         setConfidence(data.confidence);
         setSymptoms(data.symptoms); 
@@ -78,7 +74,6 @@ export default function Analysis() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
       
-      {/* Background UI */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-blue-600 rounded-full blur-3xl opacity-30 animate-pulse"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-600 rounded-full blur-3xl opacity-30 animate-pulse"></div>
@@ -91,7 +86,6 @@ export default function Analysis() {
           SKIN DISEASES CLASSIFICATION
         </h1>
 
-        {/* Upload Box */}
         <div className="text-center bg-gray-800 bg-opacity-40 p-8 rounded-2xl border border-gray-700 shadow-2xl">
           <h2 className="text-2xl font-bold text-yellow-300 mb-6">Upload Image</h2>
           
@@ -124,7 +118,6 @@ export default function Analysis() {
           {message && <p className="text-cyan-400 mt-4">{message}</p>}
         </div>
 
-        {/* Results Display */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
           <div className="bg-black bg-opacity-50 border border-green-500 rounded-xl p-8 text-center shadow-xl">
             <h2 className="text-gray-300">Confidence Score</h2>
@@ -136,7 +129,6 @@ export default function Analysis() {
           </div>
         </div>
 
-        {/* Info Cards */}
         <div className="mt-8 space-y-4">
           <div className="bg-black bg-opacity-50 border border-blue-500 rounded-xl p-6 shadow-xl">
             <h3 className="text-blue-400 font-bold mb-2">Symptoms</h3>
@@ -148,7 +140,6 @@ export default function Analysis() {
           </div>
         </div>
 
-        {/* Navigation Button */}
         <div className="mt-10 text-center">
           <button
             onClick={() => navigate("/suggestions", { state: { disease: prediction } })}

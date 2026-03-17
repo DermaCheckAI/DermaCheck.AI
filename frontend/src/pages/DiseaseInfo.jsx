@@ -30,15 +30,15 @@ export default function DiseaseInfo() {
         {/* ===== ACNE ===== */}
         <DiseaseBlock
           title="Acne"
-          description="Acne is a chronic inflammatory disorder of the pilosebaceous unit, commonly affecting adolescents and young adults."
+          description="Acne is a common skin condition that occurs when hair follicles become clogged with oil and dead skin cells."
           symptoms={[
-            "Blackheads and whiteheads",
-            "Inflammatory pimples",
-            "Nodules or cysts in severe cases",
+            "Pimples, blackheads, or whiteheads",
             "Oily skin",
+            "Redness and swelling",
+            "Painful cysts in severe cases",
           ]}
           causes={[
-            "Increased sebum production",
+            "Excess oil production",
             "Blocked hair follicles",
             "Bacterial growth",
             "Hormonal changes",
@@ -48,61 +48,72 @@ export default function DiseaseInfo() {
         {/* ===== ECZEMA ===== */}
         <DiseaseBlock
           title="Eczema (Atopic Dermatitis)"
-          description="Eczema is a chronic inflammatory skin condition characterized by itching, dryness, and impaired skin barrier function."
+          description="Eczema is a chronic inflammatory skin condition characterized by itching, dryness, and irritated skin."
           symptoms={[
             "Dry and itchy skin",
             "Red or inflamed patches",
             "Cracked or scaly skin",
+            "Thickened skin in severe cases",
           ]}
           causes={[
             "Genetic predisposition",
             "Allergic reactions",
             "Environmental triggers",
+            "Immune system dysfunction",
           ]}
         />
 
-        {/* ===== PSORIASIS ===== */}
+        {/* ===== BENIGN TUMOR ===== */}
         <DiseaseBlock
-          title="Psoriasis"
-          description="Psoriasis is a chronic immune-mediated skin disease associated with accelerated skin cell turnover."
+          title="Benign Tumor"
+          description="A benign tumor is a non-cancerous growth of cells that does not spread to other parts of the body."
           symptoms={[
-            "Thick scaly patches",
-            "Skin redness",
-            "Itching or burning sensation",
+            "Small lump under the skin",
+            "Slow growth",
+            "Usually painless",
+            "Smooth and well-defined borders",
           ]}
           causes={[
-            "Autoimmune response",
+            "Abnormal cell growth",
             "Genetic factors",
+            "Hormonal changes",
+            "Tissue injury",
           ]}
         />
 
         {/* ===== FUNGAL ===== */}
         <DiseaseBlock
-          title="Fungal Skin Infections"
-          description="Fungal skin infections are caused by fungi that affect the outer layers of the skin, commonly in warm and moist environments."
+          title="Fungal Infection"
+          description="Fungal infections are skin conditions caused by fungi that thrive in warm and moist environments."
           symptoms={[
-            "Itching",
-            "Red or circular rashes",
-            "Scaling of the skin",
+            "Red, itchy rash",
+            "Ring-shaped patches",
+            "Peeling or cracked skin",
+            "Burning sensation",
           ]}
           causes={[
-            "Fungal exposure",
-            "Warm and humid conditions",
+            "Excess moisture and sweat",
             "Poor hygiene",
+            "Weakened immune system",
+            "Contact with infected surfaces",
           ]}
         />
 
-        {/* ===== VITILIGO ===== */}
+        {/* ===== SKIN CANCER ===== */}
         <DiseaseBlock
-          title="Vitiligo"
-          description="Vitiligo is a pigmentary disorder caused by loss of melanocytes, leading to depigmented patches on the skin."
+          title="Skin Cancer"
+          description="Skin cancer is the abnormal growth of skin cells, often caused by prolonged exposure to ultraviolet radiation."
           symptoms={[
-            "White patches on skin",
-            "Loss of skin pigmentation",
+            "Unusual moles or growths",
+            "Changes in size, shape, or color",
+            "Bleeding or non-healing sores",
+            "Dark or irregular patches",
           ]}
           causes={[
-            "Autoimmune mechanisms",
+            "Excessive UV exposure",
             "Genetic factors",
+            "Weak immune system",
+            "Exposure to harmful chemicals",
           ]}
         />
 

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'; // Use useNavigate instead of window.location
 import { useState, useEffect } from 'react';
 import { login } from '../firebase'; // Import your Firebase login helper
-import Navbar from '../components/Navbar';
+// import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 
@@ -75,7 +75,7 @@ export default function Home() {
         {/* ... */}
       </div>
 
-      <Navbar showRegisterButton={true} />
+      {/* <Navbar showRegisterButton={true} /> */}
 
       <main className="relative z-5 flex-1 flex items-center justify-center">
         <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between py-20 gap-20 px-8">
