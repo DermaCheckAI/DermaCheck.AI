@@ -1,0 +1,18 @@
+/* Completely hide Google top bar */
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+/* Remove space shift */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+/* Hide Google UI elements */
+.goog-logo-link,
+.goog-te-gadget {
+  display: none !important;
+}

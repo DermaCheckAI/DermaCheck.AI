@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { logout } from '../firebase';
-
+import Translate from './Translate';
 export default function Navbar({ showRegisterButton = true }) {
 
   const handleLogout = async () => {
@@ -26,6 +26,8 @@ window.location.replace("/login");
         <Link to="/analysis" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Analysis</Link>
         <Link to="/suggestions" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Suggestions</Link>
         <Link to="/diseaseinfo" className="text-gray-300 hover:text-cyan-400 font-medium transition-colors flex items-center h-full">Diseaseinfo</Link>
+
+        <Translate/>
 
         {/* 🔴 Logout Button */}
         {/* <button
