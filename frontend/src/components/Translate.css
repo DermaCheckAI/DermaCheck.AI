@@ -1,18 +1,24 @@
-/* Completely hide Google top bar */
-iframe.goog-te-banner-frame {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
+/* Hide the top banner frame */
+.goog-te-banner-frame {
+    display: none !important;
 }
 
-/* Remove space shift */
+/* Prevent the body from being pushed down */
 body {
-  top: 0px !important;
-  position: static !important;
+    top: 0 !important;
+    position: static !important;
 }
 
-/* Hide Google UI elements */
-.goog-logo-link,
-.goog-te-gadget {
-  display: none !important;
+/* Hide the "Original Text" tooltip/popups on hover */
+.goog-te-balloon-frame {
+    display: none !important;
+}
+
+#goog-gt-tt {
+    display: none !important;
+}
+
+.goog-text-highlight {
+    background: none !important;
+    box-shadow: none !important;
 }
