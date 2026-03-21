@@ -36,7 +36,9 @@ export default function App() {
       <ToastContainer theme="dark" position="top-right" />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        
+        {/* Redirect to analysis if already logged in, otherwise show Home */}
+        <Route path="/" element={!user ? <Home /> : <Navigate to="/analysis" />} />
 
         {/* 🔐 Auth routes */}
         <Route
@@ -52,22 +54,22 @@ export default function App() {
         {/* 🔐 Protected routes */}
         <Route
           path="/analysis"
-          element={user ? <Analysis /> : <Navigate to="/login" />}
+          element={user ? <Analysis /> : <Navigate to="/" />}
         />
 
         <Route
           path="/suggestions"
-          element={user ? <Suggestions /> : <Navigate to="/login" />}
+          element={user ? <Suggestions /> : <Navigate to="/" />}
         />
 
         <Route
           path="/diseaseinfo"
-          element={user ? <DiseaseInfo /> : <Navigate to="/login" />}
+          element={user ? <DiseaseInfo /> : <Navigate to="/" />}
         />
 
         <Route
           path="/history"
-          element={user ? <History /> : <Navigate to="/login" />}
+          element={user ? <History /> : <Navigate to="/" />}
         />
       </Routes>
     </>
