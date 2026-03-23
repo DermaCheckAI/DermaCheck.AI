@@ -14,7 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
-  // ✅ ONLY FIX: URL madhun mode gheto
+  // ✅ URL madhun mode gheto
   useEffect(() => {
     if (searchParams.get("mode") === "signup") {
       setSignState("Sign Up");
@@ -25,7 +25,7 @@ const Login = () => {
 
   const user_auth = async (event) => {
     event.preventDefault();
-
+    
     try {
       if (signState === "Sign In") {
         await login(email, pass);
@@ -35,12 +35,12 @@ const Login = () => {
         toast.success("Account created successfully!");
       }
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
+      // ❌ navigate("/analysis") kadhla
+      // 👉 App.jsx automatically redirect karnaar
 
     } catch (error) {
-      toast.error(error.message);
+      console.error("Auth Error:", error.code);
+      toast.error(error.message); 
     }
   };
 
