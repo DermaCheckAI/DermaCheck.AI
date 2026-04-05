@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-import { signInWithEmailAndPassword, auth } from "../firebase";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 export default function Home() {
 
   const [form, setForm] = useState({

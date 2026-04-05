@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut 
+} from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -15,37 +20,39 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-// Firebase helper functions
-const signup = async (name, email, password) => {
+// Signup
+export const signup = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
+
     await addDoc(collection(db, "user"), {
       uid: user.uid,
       name,
       authProvider: "local",
       email
     });
+
   } catch (error) {
     console.error(error);
-    toast.error(error.code.split('/')[1].split('-').join(" "));
+    toast.error(error.message);
   }
 };
 
-const login = async (email, password) => {
+// Login
+export const login = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     console.error(error);
-    toast.error(error.code.split('/')[1].split('-').join(" "));
+    toast.error(error.message);
   }
 };
 
-const logout = () => {
+// Logout
+export const logout = () => {
   signOut(auth);
 };
-
-export { auth, db, signup, login, logout };
