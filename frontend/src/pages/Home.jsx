@@ -4,12 +4,6 @@ import { login } from '../firebase'; // Import your Firebase login helper
 // import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-<<<<<<< HEAD
-
-=======
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
->>>>>>> b3bbbf91cf8daabd875e22fa28553bd69b05d13e
 export default function Home() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
