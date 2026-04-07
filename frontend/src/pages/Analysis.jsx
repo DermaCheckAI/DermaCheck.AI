@@ -37,9 +37,11 @@ export default function Analysis() {
       setSymptoms("");
       setAdvice("");
 
-      const res = await fetch("http://127.0.0.1:5000/predict", {
-        method: "POST",
-        body: formData,
+      const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+
+      const res = await fetch(`${API_URL}/predict`, {
+      method: "POST",
+      body: formData,
       });
 
       const data = await res.json();
