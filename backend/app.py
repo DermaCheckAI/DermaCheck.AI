@@ -10,7 +10,10 @@ app = Flask(__name__)
 # --- UPDATE THIS LINE ---
 # This allows your specific Vercel frontend to access this API.
 # Replace the URL with your actual Vercel project URL.
-CORS(app, resources={r"/*": {"origins": "https://your-project-name.vercel.app"}})
+
+
+CORS(app, resources={r"/*": {"origins": "https://derma-check-ai-nine.vercel.app"}})
+
 
 @app.route("/")
 def home():
