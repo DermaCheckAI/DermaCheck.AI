@@ -181,7 +181,7 @@ export default function Home() {
             {/* FAQ 1 */}
             <div className="bg-white bg-opacity-5 backdrop-blur-lg border border-cyan-400 border-opacity-30 rounded-xl p-6 hover:border-opacity-50 transition-all">
               <h4 className="text-xl font-bold text-cyan-400 mb-2">How accurate is DermaCheck.AI?</h4>
-              <p className="text-gray-300">Our AI model is trained on thousands of verified skin conditions with ???% [TO BE UPDATED] accuracy rate. However, it's recommended to consult a dermatologist for serious concerns.</p>
+              <p className="text-gray-300">Our AI model is trained on thousands of verified skin conditions with 84% accuracy rate. However, it's recommended to consult a dermatologist for serious concerns.</p>
             </div>
 
 
