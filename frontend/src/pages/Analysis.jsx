@@ -58,7 +58,7 @@ export default function Analysis() {
         setMessage("Error: " + (data.error || "Server error"));
       }
     } catch (err) {
-      setMessage("❌ Backend not connected. Ensure Flask is running on port 5000.");
+      setMessage("❌ Backend not connected. ");
     } finally {
       setLoading(false);
     }
