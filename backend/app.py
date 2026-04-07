@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, jsonify
@@ -6,6 +8,12 @@ from PIL import Image
 
 app = Flask(__name__)
 CORS(app)
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "DermaCheck AI is live!"  # Or you can render a homepage template
 
 # Classes for prediction
 CLASSES = [
@@ -110,4 +118,5 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
