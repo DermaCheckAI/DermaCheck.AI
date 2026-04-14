@@ -1,10 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut 
-} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -25,7 +20,6 @@ export const signup = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-
     await addDoc(collection(db, "user"), {
       uid: user.uid,
       name,

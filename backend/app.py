@@ -12,8 +12,15 @@ app = Flask(__name__)
 # Replace the URL with your actual Vercel project URL.
 
 
-CORS(app, resources={r"/*": {"origins": "https://derma-check-ai-nine.vercel.app"}})
-
+# CORS(app, resources={r"/*": {"origins": "https://derma-check-ai-nine.vercel.app"}})
+# Change this line in app.py
+CORS(app, resources={r"/*": {
+    "origins": [
+        "https://derma-check-ai-nine.vercel.app", 
+        "http://localhost:5174",
+        "http://localhost:5173"
+    ]
+}})
 
 @app.route("/")
 def home():
@@ -121,4 +128,4 @@ def predict():
 if __name__ == "__main__":
     # Render uses the PORT environment variable
     port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=10000, debug=True)
