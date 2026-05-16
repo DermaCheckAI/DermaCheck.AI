@@ -1,4 +1,4 @@
-# Netflix Clone
+# DermaCheck.AI
 
 ## Home Page
 ![Home](screenshots/home.png)
