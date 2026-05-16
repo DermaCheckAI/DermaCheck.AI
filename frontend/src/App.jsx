@@ -26,7 +26,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // 🔥 wait until firebase loads
+  // wait until firebase loads
   if (loading) {
     return <div className="text-white text-center mt-20">Loading...</div>;
   }
@@ -40,7 +40,7 @@ export default function App() {
         {/* Redirect to analysis if already logged in, otherwise show Home */}
         <Route path="/" element={!user ? <Home /> : <Navigate to="/analysis" />} />
 
-        {/* 🔐 Auth routes */}
+        {/* Auth routes */}
         <Route
           path="/login"
           element={!user ? <Login /> : <Navigate to="/analysis" />}
@@ -51,7 +51,7 @@ export default function App() {
           element={!user ? <Register /> : <Navigate to="/analysis" />}
         />
 
-        {/* 🔐 Protected routes */}
+        {/*  Protected routes */}
         <Route
           path="/analysis"
           element={user ? <Analysis /> : <Navigate to="/" />}

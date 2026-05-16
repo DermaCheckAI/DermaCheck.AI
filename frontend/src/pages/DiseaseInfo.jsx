@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom"; // ✅ 1. Added Import
+import { useNavigate } from "react-router-dom"; // 1. Added Import
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function DiseaseInfo() {
-  const navigate = useNavigate(); // ✅ 2. Initialize Navigate
+  const navigate = useNavigate(); // 2. Initialize Navigate
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
@@ -19,7 +19,7 @@ export default function DiseaseInfo() {
       {/* MAIN CONTENT */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-14 space-y-10 text-gray-300">
         
-        {/* ✅ BACK BUTTON (Wrapped in a div to keep layout uniform) */}
+        {/* BACK BUTTON (Wrapped in a div to keep layout uniform) */}
         <div className="flex justify-start">
           <button 
             onClick={() => navigate(-1)} 
